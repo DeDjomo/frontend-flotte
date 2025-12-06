@@ -1,0 +1,38 @@
+/* src/components/layout/AppLayout.module.css */
+
+.appLayout {
+  min-height: 100vh;
+  background-color: white;
+}
+
+.mainContent {
+  margin-top: 60px; /* Hauteur du header */
+  margin-left: 240px; /* Décalage par défaut quand sidebar est ouverte */
+  padding: 2rem;
+  min-height: calc(100vh - 60px);
+  background-color: white;
+  transition: margin-left 0.3s ease-in-out; /* Transition fluide */
+}
+
+/* Quand la sidebar est fermée */
+.mainContent.sidebarClosed {
+  margin-left: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mainContent {
+    margin-left: 0; /* Toujours 0 sur mobile */
+    padding: 1.5rem;
+  }
+
+  .mainContent.sidebarClosed {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainContent {
+    padding: 1rem;
+  }
+}
