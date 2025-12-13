@@ -62,19 +62,25 @@ export interface Vehicle {
    */
   vehicleIotAddress?: string | null;
   
-  /** 
+  /**
    * Niveau de carburant actuel (en pourcentage)
    * Valeur entre 0 et 100
    */
   vehicleFuelLevel?: number | null;
-  
-  /** 
-   * Nombre de passagers que le véhicule peut transporter
-   * Doit être > 0
+
+  /**
+   * Nombre actuel de passagers dans le véhicule
+   * Mise à jour en temps réel par le dispositif IoT
    */
   vehicleNumberPassengers?: number | null;
-  
-  /** 
+
+  /**
+   * Capacité maximale de passagers du véhicule
+   * Nombre de places disponibles
+   */
+  vehicleCapacity?: number | null;
+
+  /**
    * Vitesse actuelle du véhicule (en km/h)
    * Mise à jour en temps réel par le dispositif IoT
    */
@@ -106,6 +112,7 @@ export interface CreateVehicleDto {
   vehicleIotAddress?: string;
   vehicleFuelLevel?: number;
   vehicleNumberPassengers?: number;
+  vehicleCapacity?: number;
   vehicleSpeed?: number;
   userId: number;
 }
@@ -126,6 +133,7 @@ export interface UpdateVehicleDto {
   vehicleIotAddress?: string;
   vehicleFuelLevel?: number;
   vehicleNumberPassengers?: number;
+  vehicleCapacity?: number;
   vehicleSpeed?: number;
   userId?: number;
 }

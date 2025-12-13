@@ -498,7 +498,7 @@ export const countNotifications = async (userId?: number): Promise<number> => {
  * @param userId - ID de l'utilisateur
  * @returns Promise avec le nombre de notifications non lues
  * 
- * Endpoint: GET /notifications/user/:userId/unread-count
+ * Endpoint: GET /notifications/user/:userId/unread/count
  * Exemple d'utilisation:
  * const unreadCount = await notificationService.countUnreadNotifications(1);
  */
@@ -506,10 +506,10 @@ export const countUnreadNotifications = async (
   userId: number
 ): Promise<number> => {
   try {
-    const response: AxiosResponse<{ count: number }> = await api.get(
-      `/notifications/user/${userId}/unread-count`
+    const response: AxiosResponse<number> = await api.get(
+      `/notifications/user/${userId}/unread/count`
     );
-    return response.data.count;
+    return response.data;
   } catch (error) {
     console.error(
       `Erreur lors du comptage des notifications non lues de l'utilisateur ${userId}:`,

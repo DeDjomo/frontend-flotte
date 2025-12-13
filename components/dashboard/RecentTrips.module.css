@@ -1,0 +1,133 @@
+/* src/components/dashboard/RecentTrips.module.css */
+.activitySection {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.activityCard {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.activityHeader {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.activityHeader h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #334155;
+  margin: 0;
+}
+
+.activityContent {
+  padding: 1rem 0;
+}
+
+.emptyState,
+.loadingState {
+  text-align: center;
+  color: #94a3b8;
+  font-style: italic;
+  padding: 2rem;
+}
+
+.tripsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tripItem {
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  /* border-left: 4px solid #1e40af; */
+  transition: all 0.2s ease;
+}
+
+.tripItem:hover {
+  background: #f1f5f9;
+  transform: translateX(4px);
+}
+
+.tripInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tripHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tripId {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.95rem;
+}
+
+.tripStatus {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.statusOngoing {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.statusCompleted {
+  background-color: #22c55e;
+  color: white;
+}
+
+.statusCancelled {
+  background-color: #ef4444;
+  color: white;
+}
+
+.tripDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tripDetail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.tripIcon {
+  width: 16px;
+  height: 16px;
+  color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tripHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

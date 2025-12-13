@@ -453,9 +453,9 @@ export const getVehiclesByMake = async (make: string): Promise<Vehicle[]> => {
 
 /**
  * Compter le nombre total de véhicules
- * 
+ *
  * @returns Promise avec le nombre de véhicules
- * 
+ *
  * Endpoint: GET /vehicles/count
  * Exemple d'utilisation:
  * const count = await vehicleService.countVehicles();
@@ -470,6 +470,20 @@ export const countVehicles = async (): Promise<number> => {
     console.error('Erreur lors du comptage des véhicules:', error);
     throw error;
   }
+};
+
+/**
+ * Compter le nombre de véhicules d'un utilisateur
+ *
+ * @param vehicles - Liste des véhicules de l'utilisateur
+ * @returns Nombre de véhicules
+ *
+ * Exemple d'utilisation:
+ * const vehicles = await vehicleService.getVehiclesByUser(1);
+ * const count = vehicleService.countUserVehicles(vehicles);
+ */
+export const countUserVehicles = (vehicles: Vehicle[]): number => {
+  return vehicles.length;
 };
 
 /**
@@ -682,6 +696,7 @@ const vehicleService = {
 
   // Statistiques et temps réel
   countVehicles,
+  countUserVehicles,
   getLowFuelVehicles,
   getMovingVehicles,
   updateVehicleSpeed,

@@ -422,10 +422,35 @@ export const getDriversOnTrip = async (): Promise<Driver[]> => {
 };
 
 /**
+ * Récupérer tous les conducteurs d'un utilisateur
+ *
+ * @param userId - ID de l'utilisateur
+ * @returns Promise avec la liste des conducteurs
+ *
+ * Endpoint: GET /drivers/user/:userId
+ * Exemple d'utilisation:
+ * const userDrivers = await driverService.getDriversByUser(1);
+ */
+export const getDriversByUser = async (userId: number): Promise<Driver[]> => {
+  try {
+    const response: AxiosResponse<Driver[]> = await api.get(
+      `/drivers/user/${userId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(
+      `Erreur lors de la récupération des conducteurs de l'utilisateur ${userId}:`,
+      error
+    );
+    throw error;
+  }
+};
+
+/**
  * Compter le nombre total de conducteurs
- * 
+ *
  * @returns Promise avec le nombre de conducteurs
- * 
+ *
  * Endpoint: GET /drivers/count
  * Exemple d'utilisation:
  * const count = await driverService.countDrivers();
@@ -440,6 +465,20 @@ export const countDrivers = async (): Promise<number> => {
     console.error('Erreur lors du comptage des conducteurs:', error);
     throw error;
   }
+};
+
+/**
+ * Compter le nombre de conducteurs d'un utilisateur
+ *
+ * @param drivers - Liste des conducteurs de l'utilisateur
+ * @returns Nombre de conducteurs
+ *
+ * Exemple d'utilisation:
+ * const drivers = await driverService.getDriversByUser(1);
+ * const count = driverService.countUserDrivers(drivers);
+ */
+export const countUserDrivers = (drivers: Driver[]): number => {
+  return drivers.length;
 };
 
 // ============================================================================
@@ -627,9 +666,11 @@ const driverService = {
 
   // Recherche et filtrage
   searchDrivers,
+  getDriversByUser,
   getAvailableDrivers,
   getDriversOnTrip,
   countDrivers,
+  countUserDrivers,
 
   // Statistiques et historique
   getDriverStatistics,

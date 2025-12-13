@@ -1,0 +1,88 @@
+/* src/components/vehicle/MetricCard.module.css */
+.card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  font-size: 1.75rem;
+  flex-shrink: 0;
+}
+
+.card.blue .iconWrapper {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.card.green .iconWrapper {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.card.orange .iconWrapper {
+  background-color: #fed7aa;
+  color: #ea580c;
+}
+
+.card.red .iconWrapper {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.content {
+  flex: 1;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0 0 0.25rem 0;
+  font-weight: 500;
+}
+
+.value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.unit {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #64748b;
+  margin-left: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 1.25rem;
+  }
+
+  .iconWrapper {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .value {
+    font-size: 1.5rem;
+  }
+}

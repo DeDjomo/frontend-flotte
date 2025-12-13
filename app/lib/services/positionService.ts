@@ -54,10 +54,10 @@ export const getAllPositions = async (
 
 /**
  * Récupérer la position actuelle d'un véhicule
- * 
+ *
  * @param vehicleId - ID du véhicule
  * @returns Promise avec la dernière position connue
- * 
+ *
  * Endpoint: GET /positions/vehicle/:vehicleId/current
  * Exemple d'utilisation:
  * const currentPosition = await positionService.getCurrentPosition(1);
@@ -73,6 +73,42 @@ export const getCurrentPosition = async (
   } catch (error) {
     console.error(
       `Erreur lors de la récupération de la position actuelle du véhicule ${vehicleId}:`,
+      error
+    );
+    throw error;
+  }
+};
+
+/**
+ * Récupérer la dernière position connue d'un véhicule
+ *
+ * @param vehicleId - ID du véhicule
+ * @returns Promise avec la dernière position enregistrée
+ *
+ * Endpoint: GET /positions/vehicle/:vehicleId/latest
+ * Exemple d'utilisation:
+ * const latestPosition = await positionService.getLatestPosition(1);
+ *
+ * Retourne:
+ * {
+ *   positionId: 1,
+ *   coordinate: { type: "Point", coordinates: [2.3522, 48.8566] },
+ *   positionDateTime: "2024-01-15T14:30:00",
+ *   vehicleId: 1,
+ *   vehicleName: "Renault Trafic"
+ * }
+ */
+export const getLatestPosition = async (
+  vehicleId: number
+): Promise<PositionWithVehicle> => {
+  try {
+    const response: AxiosResponse<PositionWithVehicle> = await api.get(
+      `/positions/vehicle/${vehicleId}/latest`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(
+      `Erreur lors de la récupération de la dernière position du véhicule ${vehicleId}:`,
       error
     );
     throw error;
@@ -586,6 +622,7 @@ const positionService = {
   // Positions en temps réel
   getAllPositions,
   getCurrentPosition,
+  getLatestPosition,
   getVehiclePositions,
   createPosition,
   updateVehiclePosition,
