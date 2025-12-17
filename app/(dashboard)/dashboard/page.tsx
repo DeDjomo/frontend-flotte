@@ -7,6 +7,7 @@ import StatCard from '@/components/dashboard/StatCard';
 import ActionButton from '@/components/dashboard/ActionButton';
 import RecentTrips from '@/components/dashboard/RecentTrips';
 import { vehicleService, driverService, notificationService, tripService } from '@/app/lib/services';
+import { useAuth } from '@/app/contexts/AuthContext';
 import styles from './dashboard.module.css';
 
 // Mode développement : données mockées
@@ -86,6 +87,7 @@ interface DashboardStats {
 }
 
 export default function DashboardPage() {
+  const { user } = useAuth();
   const [stats, setStats] = useState<DashboardStats>({
     vehiclesCount: 0,
     activeVehicles: 0,
@@ -120,20 +122,22 @@ export default function DashboardPage() {
           trips = MOCK_DATA.trips;
           unreadCount = notifications.filter(n => !n.notificationState).length;
         } else {
-          // Appeler l'API réelle
-          const userId = 1; // TODO: Récupérer depuis la session
+          // Appeler l'API réelle avec l'utilisateur connecté
+          if (!user?.userId) {
+            throw new Error('Utilisateur non connecté');
+          }
 
           console.log('📡 Récupération des véhicules...');
-          vehicles = await vehicleService.getVehiclesByUser(userId);
+          vehicles = await vehicleService.getVehiclesByUser(user.userId);
           console.log('✅ Véhicules récupérés:', vehicles.length);
 
           console.log('📡 Récupération des chauffeurs...');
-          uniqueDrivers = await driverService.getDriversByUser(userId);
+          uniqueDrivers = await driverService.getDriversByUser(user.userId);
           console.log('✅ Chauffeurs récupérés:', uniqueDrivers.length);
 
           console.log('📡 Récupération des notifications non lues...');
           try {
-            unreadCount = await notificationService.countUnreadNotifications(userId);
+            unreadCount = await notificationService.countUnreadNotifications(user.userId);
             console.log('✅ Notifications non lues:', unreadCount);
           } catch (err) {
             console.warn('⚠️ Impossible de récupérer le nombre de notifications non lues');
@@ -178,7 +182,7 @@ export default function DashboardPage() {
     }
 
     fetchDashboardData();
-  }, []);
+  }, [user]);
 
   if (error) {
     return (

@@ -189,11 +189,11 @@ export const deleteNotification = async (
 
 /**
  * Marquer une notification comme lue
- * 
+ *
  * @param notificationId - ID de la notification
  * @returns Promise avec la notification mise à jour
- * 
- * Endpoint: PATCH /notifications/:id/mark-as-read
+ *
+ * Endpoint: PATCH /notifications/:id/read
  * Exemple d'utilisation:
  * await notificationService.markAsRead(1);
  */
@@ -202,7 +202,7 @@ export const markAsRead = async (
 ): Promise<Notification> => {
   try {
     const response: AxiosResponse<Notification> = await api.patch(
-      `/notifications/${notificationId}/mark-as-read`
+      `/notifications/${notificationId}/read`
     );
     console.log(`Notification ${notificationId} marquée comme lue`);
     return response.data;

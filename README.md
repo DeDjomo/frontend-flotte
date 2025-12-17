@@ -30,3 +30,6 @@ npm install react-hot-toast
 # Authentification
 npm install next-auth
 ```
+
+
+

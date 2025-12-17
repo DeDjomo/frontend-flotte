@@ -17,7 +17,7 @@ import { ISODateString } from './common';
  *   driverPhoneNumber VARCHAR(20) NOT NULL,
  *   emergencyContactName VARCHAR(100),
  *   emergencyContact VARCHAR(20),
- *   personnalInformations TEXT,
+ *   personalInformations TEXT,
  *   createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  *   updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
  * );
@@ -45,7 +45,7 @@ export interface Driver {
    * Informations personnelles supplémentaires (optionnel)
    * Peut contenir: adresse, numéro de permis, groupe sanguin, etc.
    */
-  personnalInformations?: string | null;
+  personalInformations?: string | null;
   
   /** Date de création de la fiche conducteur */
   createdAt: ISODateString;
@@ -66,7 +66,8 @@ export interface CreateDriverDto {
   driverPhoneNumber: string;
   emergencyContactName?: string;
   emergencyContact?: string;
-  personnalInformations?: string;
+  personalInformations?: string;
+  userId: number;
 }
 
 /**
@@ -81,7 +82,7 @@ export interface UpdateDriverDto {
   driverPhoneNumber?: string;
   emergencyContactName?: string;
   emergencyContact?: string;
-  personnalInformations?: string;
+  personalInformations?: string;
 }
 
 /**

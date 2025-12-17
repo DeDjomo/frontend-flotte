@@ -24,6 +24,7 @@ export { default as positionService } from './positionService';
 export { default as maintenanceService } from './maintenanceService';
 export { default as fuelRechargeService } from './fuelRechargeService';
 export { default as notificationService } from './notificationService';
+export { default as authService } from './authService';
 
 // Export des fonctions individuelles de userService
 export {

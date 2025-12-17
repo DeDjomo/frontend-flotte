@@ -1,14 +1,22 @@
 // src/app/(dashboard)/layout.tsx
+'use client';
+
 import React from 'react';
 import AppLayout from '@/components/layout/AppLayout';
+import ProtectedRoute from '@/app/components/ProtectedRoute';
+import { useAuth } from '@/app/contexts/AuthContext';
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // TODO: Récupérer le userName depuis la session/auth plus tard
-  const userName = 'Kant Meukam'; // Vous pouvez changer ce nom
+  const { user } = useAuth();
+  const userName = user?.userName || 'Utilisateur';
 
-  return <AppLayout userName={userName}>{children}</AppLayout>;
+  return (
+    <ProtectedRoute>
+      <AppLayout userName={userName}>{children}</AppLayout>
+    </ProtectedRoute>
+  );
 }

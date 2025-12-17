@@ -616,7 +616,7 @@ export const updateEmergencyContact = async (
  * Mettre à jour les informations personnelles d'un conducteur
  * 
  * @param driverId - ID du conducteur
- * @param personnalInformations - Informations personnelles (texte libre)
+ * @param personalInformations - Informations personnelles (texte libre)
  * @returns Promise avec le conducteur mis à jour
  * 
  * Endpoint: PATCH /drivers/:id/personal-info
@@ -625,12 +625,12 @@ export const updateEmergencyContact = async (
  */
 export const updatePersonalInfo = async (
   driverId: number,
-  personnalInformations: string
+  personalInformations: string
 ): Promise<Driver> => {
   try {
     const response: AxiosResponse<Driver> = await api.patch(
       `/drivers/${driverId}/personal-info`,
-      { personnalInformations }
+      { personalInformations }
     );
     return response.data;
   } catch (error) {

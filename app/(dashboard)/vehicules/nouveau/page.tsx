@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FiUpload } from 'react-icons/fi';
 import { vehicleService } from '@/app/lib/services';
+import { useAuth } from '@/app/contexts/AuthContext';
 import styles from './nouveau.module.css';
 
 interface VehicleFormData {
@@ -18,6 +19,7 @@ interface VehicleFormData {
 }
 
 export default function NouveauVehiculePage() {
+  const { user } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState<VehicleFormData>({
     vehicleMake: '',
@@ -85,7 +87,10 @@ export default function NouveauVehiculePage() {
     try {
       setLoading(true);
 
-      const userId = 1; // TODO: Récupérer depuis la session
+      if (!user?.userId) {
+        setError('Utilisateur non connecté');
+        return;
+      }
 
       // Créer le véhicule
       console.log('📡 Création du véhicule...');
@@ -95,7 +100,7 @@ export default function NouveauVehiculePage() {
         vehicleRegistrationNumber: formData.vehicleRegistrationNumber,
         vehicleType: formData.vehicleType,
         vehicleNumberPassengers: 5, // Valeur par défaut
-        userId: userId,
+        userId: user.userId,
       });
 
       console.log('✅ Véhicule créé:', newVehicle);

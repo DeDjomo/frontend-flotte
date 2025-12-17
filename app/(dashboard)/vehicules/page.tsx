@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FiPlus, FiTrash2, FiTruck } from 'react-icons/fi';
 import { vehicleService } from '@/app/lib/services';
+import { useAuth } from '@/app/contexts/AuthContext';
 import styles from './vehicules.module.css';
 import { useRouter } from 'next/navigation';
 
@@ -45,6 +46,7 @@ interface Vehicle {
 }
 
 export default function VehiculesPage() {
+  const { user } = useAuth();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,10 +54,14 @@ export default function VehiculesPage() {
   const router = useRouter();
 
   useEffect(() => {
-    fetchVehicles();
-  }, []);
+    if (user?.userId) {
+      fetchVehicles();
+    }
+  }, [user]);
 
   const fetchVehicles = async () => {
+    if (!user?.userId) return;
+
     try {
       setLoading(true);
       setError(null);
@@ -64,9 +70,8 @@ export default function VehiculesPage() {
         console.log('🧪 Mode développement : utilisation des données mockées');
         setVehicles(MOCK_VEHICLES);
       } else {
-        const userId = 1; // TODO: Récupérer depuis la session
         console.log('📡 Récupération des véhicules...');
-        const data = await vehicleService.getVehiclesByUser(userId);
+        const data = await vehicleService.getVehiclesByUser(user.userId);
         console.log('✅ Véhicules récupérés:', data.length);
         setVehicles(data);
       }
