@@ -1,8 +1,14 @@
 // src/app/(dashboard)/profile/page.tsx
+'use client';
+
 import React from 'react';
+import { FiSun, FiMoon } from 'react-icons/fi';
+import { useTheme } from '@/contexts/ThemeContext';
 import styles from './profile.module.css';
 
 export default function ProfilePage() {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <div className={styles.container}>
       <div className={styles.profileCard}>
@@ -31,6 +37,34 @@ export default function ProfilePage() {
                 <span className={styles.label}>Rôle :</span>
                 <span className={styles.value}>Administrateur</span>
               </div>
+            </div>
+          </div>
+
+          {/* Section Préférences avec le sélecteur de thème */}
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Préférences</h2>
+            <div className={styles.preferenceItem}>
+              <div className={styles.preferenceInfo}>
+                <span className={styles.preferenceLabel}>Thème de l'interface</span>
+                <span className={styles.preferenceDescription}>
+                  Choisissez entre le mode clair ou sombre
+                </span>
+              </div>
+              <button
+                className={styles.themeToggle}
+                onClick={toggleTheme}
+                aria-label={theme === 'dark' ? 'Passer au thème clair' : 'Passer au thème sombre'}
+              >
+                <span className={styles.themeIcon}>
+                  {theme === 'dark' ? <FiMoon /> : <FiSun />}
+                </span>
+                <span className={styles.themeLabel}>
+                  {theme === 'dark' ? 'Mode sombre' : 'Mode clair'}
+                </span>
+                <span className={styles.themeSwitchTrack}>
+                  <span className={`${styles.themeSwitchThumb} ${theme === 'light' ? styles.themeSwitchThumbActive : ''}`}></span>
+                </span>
+              </button>
             </div>
           </div>
 

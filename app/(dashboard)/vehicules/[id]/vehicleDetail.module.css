@@ -3,39 +3,54 @@
 .container {
   max-width: 1400px;
   margin: 0 auto;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .breadcrumb {
   font-size: 0.875rem;
-  color: #64748b;
+  color: var(--text-muted);
   margin-bottom: 1rem;
   font-weight: 500;
 }
 
 .breadcrumbLink {
-  color: #1e40af;
+  color: var(--primary-cyan);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .breadcrumbLink:hover {
-  color: #1e3a8a;
+  color: var(--text-primary);
   text-decoration: underline;
 }
 
 .breadcrumbCurrent {
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 /* Card d'informations */
 .vehicleCard {
   display: flex;
   gap: 1.5rem;
-  background: white;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  background: var(--surface-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-md);
 }
 
 .vehicleIcon {
@@ -44,9 +59,9 @@
   justify-content: center;
   width: 100px;
   height: 100px;
-  background-color: #dbeafe;
-  border-radius: 8px;
-  color: #1e40af;
+  background: linear-gradient(135deg, rgba(36, 99, 235, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+  border-radius: 12px;
+  color: var(--primary-cyan);
   font-size: 3rem;
   flex-shrink: 0;
 }
@@ -65,12 +80,12 @@
 
 .infoLabel {
   font-weight: 600;
-  color: #475569;
+  color: var(--text-secondary);
   min-width: 140px;
 }
 
 .infoValue {
-  color: #1e293b;
+  color: var(--text-primary);
   font-weight: 500;
 }
 
@@ -78,24 +93,25 @@
 .tabs {
   display: flex;
   gap: 0;
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: var(--surface-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
   border-bottom: none;
-  border-radius: 8px 8px 0 0;
+  border-radius: 16px 16px 0 0;
   overflow: hidden;
 }
 
 .tab {
   flex: 1;
   padding: 1rem 1.5rem;
-  background: white;
+  background: transparent;
   border: none;
-  border-right: 1px solid #e2e8f0;
+  border-right: 1px solid var(--border-glass);
   font-size: 0.9rem;
   font-weight: 500;
-  color: #64748b;
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   white-space: nowrap;
 }
 
@@ -104,21 +120,22 @@
 }
 
 .tab:hover {
-  background: #f8fafc;
-  color: #1e293b;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
 }
 
 .tabActive {
-  background: #1e40af !important;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%) !important;
   color: white !important;
 }
 
 /* Contenu des onglets */
 .tabContent {
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: var(--surface-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
   border-top: none;
-  border-radius: 0 0 8px 8px;
+  border-radius: 0 0 16px 16px;
   min-height: 500px;
 }
 
@@ -135,33 +152,33 @@
   align-items: center;
   justify-content: center;
   height: 500px;
-  color: #64748b;
+  color: var(--text-secondary);
   font-style: italic;
 }
 
 /* Détails */
 .detailsContent {
   padding: 2.5rem;
-  background: linear-gradient(to bottom, #f8fafc 0%, white 100%);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
 }
 
 .detailsHeader {
   text-align: center;
   margin-bottom: 3rem;
   padding-bottom: 1.5rem;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-glass);
 }
 
 .detailsTitle {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-primary);
   margin: 0 0 0.5rem 0;
 }
 
 .detailsSubtitle {
   font-size: 1rem;
-  color: #64748b;
+  color: var(--text-secondary);
   margin: 0;
   font-weight: 500;
 }
@@ -174,21 +191,20 @@
   margin: 0 auto;
 }
 
-/* Améliorer l'apparence des composants dans la grille */
-.metricsGrid > * {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+.metricsGrid>* {
+  box-shadow: var(--shadow-md);
   transition: all 0.3s ease;
 }
 
-.metricsGrid > *:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+.metricsGrid>*:hover {
+  box-shadow: var(--shadow-lg);
   transform: translateY(-4px);
 }
 
 /* Trips History */
 .tripsContent {
   padding: 2.5rem;
-  background: linear-gradient(to bottom, #f8fafc 0%, white 100%);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
 }
 
 .tripsList {
@@ -200,18 +216,17 @@
 }
 
 .tripCard {
-  background: white;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
   padding: 1.5rem;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .tripCard:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
-  border-color: #cbd5e1;
 }
 
 .tripHeader {
@@ -220,23 +235,23 @@
   align-items: center;
   margin-bottom: 1.25rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #f1f5f9;
+  border-bottom: 1px solid var(--border-glass);
 }
 
 .tripId {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .tripDriver {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #64748b;
-  background: #f1f5f9;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .tripDetails {
@@ -256,31 +271,31 @@
 .tripLabel {
   font-size: 0.875rem;
   font-weight: 700;
-  color: #475569;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .tripValue {
   font-size: 1rem;
-  color: #1e293b;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
 .tripLocation {
   font-size: 0.875rem;
-  color: #475569;
+  color: var(--text-secondary);
   font-weight: 500;
-  background: #f1f5f9;
+  background: rgba(255, 255, 255, 0.05);
   padding: 0.4rem 0.75rem;
-  border-radius: 6px;
+  border-radius: 8px;
   display: inline-block;
   margin-top: 0.25rem;
 }
 
 .tripArrow {
   font-size: 2rem;
-  color: #3b82f6;
+  color: var(--primary-cyan);
   font-weight: bold;
   text-align: center;
 }
@@ -289,16 +304,16 @@
   text-align: center;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #3b82f6;
-  background: #dbeafe;
+  color: var(--primary-cyan);
+  background: linear-gradient(135deg, rgba(36, 99, 235, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
   padding: 0.75rem;
-  border-radius: 8px;
+  border-radius: 10px;
   margin-top: 0.5rem;
 }
 
 .noData {
   text-align: center;
-  color: #64748b;
+  color: var(--text-secondary);
   font-style: italic;
   font-size: 1.1rem;
   padding: 3rem;
@@ -311,7 +326,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -320,14 +336,15 @@
 }
 
 .tripModalContent {
-  background: white;
-  border-radius: 12px;
+  background: var(--primary-dark);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
   width: 100%;
   max-width: 900px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-lg);
 }
 
 .tripModalHeader {
@@ -335,33 +352,33 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-glass);
 }
 
 .tripModalHeader h2 {
   margin: 0;
   font-size: 1.5rem;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .tripModalClose {
-  background: #f1f5f9;
-  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
   width: 40px;
   height: 40px;
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   font-size: 1.5rem;
-  color: #475569;
-  transition: all 0.2s ease;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
 }
 
 .tripModalClose:hover {
-  background: #e2e8f0;
-  color: #1e293b;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
 }
 
 .tripModalMap {
@@ -370,14 +387,14 @@
   height: 500px;
   width: 100%;
   position: relative;
-  border-radius: 0 0 12px 12px;
+  border-radius: 0 0 16px 16px;
   overflow: hidden;
 }
 
 /* Bilans Section */
 .bilansContent {
   padding: 2.5rem;
-  background: linear-gradient(to bottom, #f8fafc 0%, white 100%);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
 }
 
 .bilansSection {
@@ -391,10 +408,10 @@
 .bilansSectionTitle {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-primary);
   margin: 0 0 1.5rem 0;
   padding-bottom: 0.75rem;
-  border-bottom: 3px solid #3b82f6;
+  border-bottom: 2px solid var(--primary-cyan);
 }
 
 .bilansList {
@@ -404,18 +421,17 @@
 }
 
 .bilanCard {
-  background: white;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
   padding: 1.5rem;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .bilanCard:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
-  border-color: #cbd5e1;
 }
 
 .bilanCardHeader {
@@ -424,19 +440,19 @@
   align-items: flex-start;
   margin-bottom: 1.25rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #f1f5f9;
+  border-bottom: 1px solid var(--border-glass);
   gap: 1rem;
 }
 
 .bilanCardTitle {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .bilanCardDate {
   font-size: 0.875rem;
-  color: #64748b;
+  color: var(--text-muted);
   font-weight: 500;
   text-align: right;
 }
@@ -456,14 +472,14 @@
 .bilanLabel {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #64748b;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .bilanValue {
   font-size: 1rem;
-  color: #1e293b;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -473,7 +489,7 @@
   align-items: center;
   justify-content: center;
   height: 500px;
-  color: #64748b;
+  color: var(--text-secondary);
   font-style: italic;
   font-size: 1.1rem;
 }
@@ -483,29 +499,32 @@
 .error {
   text-align: center;
   padding: 3rem;
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
 .error {
-  background: #fee2e2;
-  border: 2px solid #ef4444;
-  border-radius: 8px;
-  color: #991b1b;
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  border-radius: 16px;
+  color: var(--error-text);
 }
 
 .backLink {
   display: inline-block;
   margin-top: 1rem;
   padding: 0.75rem 1.5rem;
-  background: #1e40af;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
   color: white;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 10px;
   font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(36, 99, 235, 0.3);
 }
 
 .backLink:hover {
-  background: #1e3a8a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(36, 99, 235, 0.4);
 }
 
 /* Responsive */

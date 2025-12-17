@@ -6,11 +6,13 @@
   align-items: center;
   justify-content: space-between;
   padding: 2rem 1.5rem;
-  background: white;
-  border-radius: 12px;
-  border: 2px solid #e2e8f0;
+  background: var(--surface-card);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  border: 1px solid var(--border-glass);
   position: relative;
   min-height: 300px;
+  box-shadow: var(--shadow-md);
 }
 
 .tankWrapper {
@@ -30,7 +32,7 @@
 
 .graduation {
   font-size: 10px;
-  fill: #64748b;
+  fill: var(--text-secondary);
   font-weight: 600;
 }
 
@@ -41,7 +43,10 @@
 .level {
   font-size: 2rem;
   font-weight: 700;
-  color: #1e293b;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0 0 0.25rem 0;
 }
 
@@ -53,7 +58,7 @@
 
 .label {
   font-size: 0.95rem;
-  color: #64748b;
+  color: var(--text-secondary);
   font-weight: 600;
   margin: 0;
   text-transform: uppercase;
