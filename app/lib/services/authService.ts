@@ -46,14 +46,14 @@ export const verifyPassword = async (userId: number, password: string): Promise<
   try {
     console.log('Requête verifyPassword - userId:', userId);
     console.log('URL complète:', `/users/${userId}/verify-password`);
-    console.log('Mot de passe envoyé (string directe):', password);
-    
-    // IMPORTANT: Le backend Spring Boot attend une STRING directe, pas un objet { password: "..." }
+    console.log('Mot de passe envoyé (objet):', { password });
+
+    // IMPORTANT: Le backend Spring Boot attend un objet PasswordVerificationDTO
     const response: AxiosResponse = await api.post(
       `/users/${userId}/verify-password`,
-      password  // Envoyer directement la string, pas un objet
+      { password }  // Envoyer un objet avec le champ password
     );
-    
+
     console.log('Réponse complète verifyPassword:', {
       status: response.status,
       headers: response.headers,
@@ -64,7 +64,7 @@ export const verifyPassword = async (userId: number, password: string): Promise<
     // Le backend peut renvoyer directement un boolean ou un objet avec un champ
     // Gérer les différents formats de réponse
     let isValid: boolean;
-    
+
     if (typeof response.data === 'boolean') {
       isValid = response.data;
     } else if (typeof response.data === 'object' && response.data !== null) {
@@ -80,10 +80,10 @@ export const verifyPassword = async (userId: number, password: string): Promise<
 
     console.log('Résultat final de verifyPassword:', isValid);
     return isValid;
-    
+
   } catch (error: any) {
     console.error('Erreur lors de la vérification du mot de passe:', error);
-    
+
     if (error.response) {
       console.error('Détails de l\'erreur:', {
         status: error.response.status,
@@ -91,13 +91,13 @@ export const verifyPassword = async (userId: number, password: string): Promise<
         data: error.response.data,
         headers: error.response.headers,
       });
-      
+
       // Si le serveur répond avec un 200 mais data=false, ce n'est pas une erreur
       if (error.response.status === 200) {
         console.log('Status 200 reçu, vérification des données...');
         return false;
       }
-      
+
       // Pour les autres erreurs HTTP
       const serverMessage = error.response.data?.message || error.response.data || 'Erreur serveur';
       throw new Error(String(serverMessage));
@@ -141,7 +141,7 @@ export const login = async (email: string, password: string): Promise<User> => {
     // 2. Vérifier le mot de passe avec l'ID récupéré
     console.log('🔑 Étape 2: Vérification du mot de passe...');
     console.log('userId utilisé:', user.userId);
-    
+
     const isPasswordValid = await verifyPassword(user.userId, password);
 
     console.log('Résultat de la vérification:', isPasswordValid);
@@ -166,7 +166,7 @@ export const login = async (email: string, password: string): Promise<User> => {
     console.error('Message:', error.message);
     console.error('Stack:', error.stack);
     console.error('═══════════════════════════════════════════════');
-    
+
     // Re-throw l'erreur avec un message plus clair
     if (error.response?.status === 404) {
       throw new Error('Utilisateur non trouvé');
