@@ -26,6 +26,17 @@
   --surface-glass-hover: rgba(255, 255, 255, 0.06);
   --surface-card: rgba(255, 255, 255, 0.05);
   --border-glass: rgba(255, 255, 255, 0.1);
+  --nav-bg: linear-gradient(180deg, rgba(10, 14, 39, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
+  --footer-bg: rgba(0, 0, 0, 0.3);
+
+  /* Sidebar spécifique - Mode sombre */
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-text: #94a3b8;
+  --sidebar-text-active: #f8fafc;
+  --sidebar-hover: rgba(255, 255, 255, 0.05);
+  --sidebar-active-bg: linear-gradient(90deg, rgba(36, 99, 235, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%);
+  --sidebar-accent: #06b6d4;
+  --sidebar-separator: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
 
   /* Texte */
   --text-primary: #f8fafc;
@@ -48,32 +59,49 @@
   --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.4);
   --shadow-glow: 0 0 40px rgba(36, 99, 235, 0.3);
 
+  /* Grille de fond */
+  --grid-color: rgba(255, 255, 255, 0.02);
+
   /* Animations */
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
+
 /* ============================================================================
    Thème Clair
+   Couleurs: Blanc, Bleu (header/sidebar), Orange (accents)
    ============================================================================ */
 [data-theme="light"] {
   /* Couleurs principales */
-  --primary-dark: #f8fafc;
+  --primary-dark: #ffffff;
   --primary-blue: #2463eb;
-  --primary-cyan: #0891b2;
-  --accent-orange: #ea580c;
+  --primary-cyan: #06b6d4;
+  --accent-orange: #f97316;
   --accent-purple: #9333ea;
 
   /* Dégradés */
-  --gradient-primary: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
-  --gradient-accent: linear-gradient(135deg, #2463eb 0%, #0891b2 100%);
-  --gradient-glow: linear-gradient(135deg, rgba(36, 99, 235, 0.1) 0%, rgba(8, 145, 178, 0.1) 100%);
+  --gradient-primary: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+  --gradient-accent: linear-gradient(135deg, #2463eb 0%, #06b6d4 100%);
+  --gradient-glow: linear-gradient(135deg, rgba(36, 99, 235, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
 
   /* Surfaces */
-  --surface-glass: rgba(255, 255, 255, 0.7);
-  --surface-glass-hover: rgba(255, 255, 255, 0.9);
-  --surface-card: rgba(255, 255, 255, 0.9);
-  --border-glass: rgba(0, 0, 0, 0.08);
+  --surface-glass: rgba(255, 255, 255, 0.95);
+  --surface-glass-hover: rgba(255, 255, 255, 1);
+  --surface-card: #ffffff;
+  --border-glass: rgba(36, 99, 235, 0.12);
+  /* Header et Sidebar - même gradient bleu que le header en mode sombre */
+  --nav-bg: linear-gradient(135deg, #2463eb 0%, #06b6d4 100%);
+  --footer-bg: #f8fafc;
+
+  /* Sidebar spécifique - Mode clair (texte blanc sur fond bleu) */
+  --sidebar-border: rgba(255, 255, 255, 0.2);
+  --sidebar-text: rgba(255, 255, 255, 0.8);
+  --sidebar-text-active: #ffffff;
+  --sidebar-hover: rgba(255, 255, 255, 0.15);
+  --sidebar-active-bg: rgba(255, 255, 255, 0.2);
+  --sidebar-accent: #f97316;
+  --sidebar-separator: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
 
   /* Texte */
   --text-primary: #0f172a;
@@ -91,10 +119,13 @@
   --success-text: #16a34a;
 
   /* Ombres */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
-  --shadow-glow: 0 0 40px rgba(36, 99, 235, 0.15);
+  --shadow-sm: 0 2px 8px rgba(36, 99, 235, 0.08);
+  --shadow-md: 0 4px 20px rgba(36, 99, 235, 0.1);
+  --shadow-lg: 0 8px 40px rgba(36, 99, 235, 0.15);
+  --shadow-glow: 0 0 40px rgba(36, 99, 235, 0.2);
+
+  /* Grille de fond */
+  --grid-color: rgba(36, 99, 235, 0.02);
 }
 
 /* ============================================================================

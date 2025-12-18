@@ -51,8 +51,8 @@
     right: 0;
     bottom: 0;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
     background-size: 50px 50px;
     pointer-events: none;
 }
@@ -456,9 +456,10 @@
 /* Footer */
 .footer {
     padding: 1.5rem 2rem;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--footer-bg);
     border-top: 1px solid var(--border-glass);
     text-align: center;
+    transition: background 0.3s ease;
 }
 
 .footerText {
