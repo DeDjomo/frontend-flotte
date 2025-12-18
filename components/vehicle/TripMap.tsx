@@ -42,6 +42,8 @@ interface TripMapProps {
 }
 
 export default function TripMap({ trip, onClose, modalStyles }: TripMapProps) {
+  const [routePath, setRoutePath] = useState<[number, number][]>([]);
+  const [loadingRoute, setLoadingRoute] = useState(false);
   const [icons, setIcons] = useState<{ green: any; red: any } | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [loadingError, setLoadingError] = useState<string | null>(null);
@@ -86,7 +88,6 @@ export default function TripMap({ trip, onClose, modalStyles }: TripMapProps) {
         });
 
         setIcons({ green: greenIcon, red: redIcon });
-        console.log('✅ Icônes Leaflet chargées avec succès');
       } catch (error) {
         console.error('❌ Erreur lors du chargement des icônes Leaflet:', error);
         setLoadingError('Erreur lors du chargement de la carte');
@@ -95,6 +96,63 @@ export default function TripMap({ trip, onClose, modalStyles }: TripMapProps) {
 
     loadIcons();
   }, [isClient]);
+
+  // Charger le tracé (Route)
+  useEffect(() => {
+    if (!trip || !trip.vehicleId || !isClient) return;
+
+    const fetchRoute = async () => {
+      try {
+        setLoadingRoute(true);
+        // Dynamically import service
+        const { default: positionService } = await import('@/app/lib/services/positionService');
+
+        const positions = await positionService.getVehiclePositions(trip.vehicleId, {
+          startDate: trip.departureDateTime,
+          endDate: trip.arrivalDateTime || new Date().toISOString(),
+          limit: 1000
+        });
+
+        if (positions && positions.length > 0) {
+          const sorted = positions.sort((a, b) =>
+            new Date(a.positionDateTime).getTime() - new Date(b.positionDateTime).getTime()
+          );
+
+          const path: [number, number][] = sorted.map(p => [
+            p.coordinate.coordinates[1],
+            p.coordinate.coordinates[0]
+          ]);
+
+          if (trip.departurePoint?.coordinates) {
+            path.unshift([trip.departurePoint.coordinates[1], trip.departurePoint.coordinates[0]]);
+          }
+
+          if (trip.arrivalDateTime && trip.arrivalPoint?.coordinates) {
+            path.push([trip.arrivalPoint.coordinates[1], trip.arrivalPoint.coordinates[0]]);
+          }
+
+          setRoutePath(path);
+        } else {
+          // Fallback
+          const straightLine: [number, number][] = [
+            [trip.departurePoint.coordinates[1], trip.departurePoint.coordinates[0]],
+            [trip.arrivalPoint.coordinates[1], trip.arrivalPoint.coordinates[0]]
+          ];
+          setRoutePath(straightLine);
+        }
+      } catch (err) {
+        console.error('Error fetching route:', err);
+        setRoutePath([
+          [trip.departurePoint.coordinates[1], trip.departurePoint.coordinates[0]],
+          [trip.arrivalPoint.coordinates[1], trip.arrivalPoint.coordinates[0]]
+        ]);
+      } finally {
+        setLoadingRoute(false);
+      }
+    };
+
+    fetchRoute();
+  }, [trip, isClient]);
 
   // Vérifier que le trajet a les points nécessaires
   if (!trip.departurePoint?.coordinates || !trip.arrivalPoint?.coordinates) {
@@ -193,7 +251,6 @@ export default function TripMap({ trip, onClose, modalStyles }: TripMapProps) {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              {/* Marqueur de départ (vert) */}
               <Marker
                 position={[trip.departurePoint.coordinates[1], trip.departurePoint.coordinates[0]]}
                 icon={icons.green}
@@ -210,7 +267,6 @@ export default function TripMap({ trip, onClose, modalStyles }: TripMapProps) {
                   ).toLocaleString('fr-FR')}
                 </Popup>
               </Marker>
-              {/* Marqueur d'arrivée (rouge) */}
               <Marker
                 position={[trip.arrivalPoint.coordinates[1], trip.arrivalPoint.coordinates[0]]}
                 icon={icons.red}
@@ -227,18 +283,45 @@ export default function TripMap({ trip, onClose, modalStyles }: TripMapProps) {
                   ).toLocaleString('fr-FR')}
                 </Popup>
               </Marker>
-              {/* Ligne entre départ et arrivée */}
-              <Polyline
-                positions={[
-                  [trip.departurePoint.coordinates[1], trip.departurePoint.coordinates[0]],
-                  [trip.arrivalPoint.coordinates[1], trip.arrivalPoint.coordinates[0]]
-                ]}
-                color="#06b6d4"
-                weight={4}
-                opacity={0.8}
-                dashArray="10, 10"
-              />
+
+              {routePath.length > 0 && (
+                <Polyline
+                  positions={routePath}
+                  color="#06b6d4"
+                  weight={4}
+                  opacity={0.8}
+                  dashArray={loadingRoute ? "5, 10" : undefined}
+                />
+              )}
+
+              {routePath.length === 0 && (
+                <Polyline
+                  positions={[
+                    [trip.departurePoint.coordinates[1], trip.departurePoint.coordinates[0]],
+                    [trip.arrivalPoint.coordinates[1], trip.arrivalPoint.coordinates[0]]
+                  ]}
+                  color="#94a3b8"
+                  weight={2}
+                  opacity={0.5}
+                  dashArray="5, 5"
+                />
+              )}
             </MapContainer>
+          )}
+          {loadingRoute && (
+            <div style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              background: 'rgba(0,0,0,0.6)',
+              color: 'white',
+              padding: '5px 10px',
+              borderRadius: '4px',
+              fontSize: '0.8rem',
+              zIndex: 1001
+            }}>
+              Chargement du tracé...
+            </div>
           )}
         </div>
       </div>

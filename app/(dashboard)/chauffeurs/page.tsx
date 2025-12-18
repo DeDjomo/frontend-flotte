@@ -3,9 +3,10 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FiPlus, FiTrash2, FiUser } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiUser, FiEdit2 } from 'react-icons/fi';
 import { driverService } from '@/app/lib/services';
 import { useAuth } from '@/app/contexts/AuthContext';
+import { useModal } from '@/app/contexts/ModalContext';
 import styles from './chauffeurs.module.css';
 import { useRouter } from 'next/navigation';
 import type { Driver } from '@/app/types';
@@ -19,6 +20,7 @@ export default function ChauffeursPage() {
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const router = useRouter();
+  const { showConfirm } = useModal();
 
   useEffect(() => {
     if (user?.userId) {
@@ -46,7 +48,13 @@ export default function ChauffeursPage() {
   };
 
   const handleDelete = async (driverId: number) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer ce chauffeur ?')) {
+    if (!await showConfirm({
+      title: 'Supprimer le chauffeur',
+      message: 'Êtes-vous sûr de vouloir supprimer ce chauffeur ? Cette action est irréversible.',
+      confirmText: 'Supprimer',
+      cancelText: 'Annuler',
+      isDanger: true
+    })) {
       return;
     }
 
@@ -163,17 +171,30 @@ export default function ChauffeursPage() {
                 </td>
                 <td>{driver.driverEmail}</td>
                 <td>
-                  <button
-                    className={styles.deleteButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(driver.driverId);
-                    }}
-                    disabled={deletingId === driver.driverId}
-                    aria-label="Supprimer"
-                  >
-                    <FiTrash2 />
-                  </button>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button
+                      className={styles.editButton}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/chauffeurs/${driver.driverId}/edit`);
+                      }}
+                      title="Modifier"
+                    >
+                      <FiEdit2 />
+                    </button>
+                    <button
+                      className={styles.deleteButton}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(driver.driverId);
+                      }}
+                      disabled={deletingId === driver.driverId}
+                      aria-label="Supprimer"
+                      title="Supprimer"
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

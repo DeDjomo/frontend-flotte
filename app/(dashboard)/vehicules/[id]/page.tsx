@@ -5,8 +5,10 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { FiTruck, FiX } from 'react-icons/fi';
+import { FiTruck, FiX, FiTrash2 } from 'react-icons/fi';
 import { vehicleService, positionService, tripService, fuelRechargeService, maintenanceService } from '@/app/lib/services';
+import { useAuth } from '@/app/contexts/AuthContext';
+import { useModal } from '@/app/contexts/ModalContext';
 import SpeedGauge from '@/components/vehicle/SpeedGauge';
 import FuelGauge from '@/components/vehicle/FuelGauge';
 import PassengerIndicator from '@/components/vehicle/PassengerIndicator';
@@ -79,6 +81,8 @@ export default function VehicleDetailPage() {
   const [loading, setLoading] = useState(true);
   const [loadingTrips, setLoadingTrips] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deletingTripId, setDeletingTripId] = useState<number | null>(null);
+  const { showConfirm } = useModal();
   const [selectedTrip, setSelectedTrip] = useState<any>(null);
   const [locationNames, setLocationNames] = useState<{ [key: string]: string }>({});
   const [leafletIcon, setLeafletIcon] = useState<any>(null);
@@ -136,8 +140,8 @@ export default function VehicleDetailPage() {
         const addr = data.address;
         // Prioriser: rue/route, quartier, ville
         locationName = addr.road || addr.suburb || addr.neighbourhood ||
-                      addr.city || addr.town || addr.village ||
-                      addr.county || 'Lieu inconnu';
+          addr.city || addr.town || addr.village ||
+          addr.county || 'Lieu inconnu';
 
         // Ajouter la ville si on a une rue
         if (addr.road && (addr.city || addr.town)) {
@@ -179,47 +183,81 @@ export default function VehicleDetailPage() {
 
         // Récupérer les conducteurs du véhicule
         try {
+          console.log('📡 Récupération des conducteurs...');
           const drivers = await vehicleService.getVehicleDrivers(vehicleId);
           if (drivers && drivers.length > 0) {
             setDriver(drivers[0]); // Prendre le premier conducteur
           }
-        } catch (err) {
+        } catch (err: any) {
+          console.error('❌ Erreur conducteurs:', err.response?.status, err.response?.data);
           console.warn('⚠️ Aucun conducteur assigné');
         }
 
         // Récupérer la dernière position connue
         try {
+          console.log('📡 Récupération de la position...');
           const latestPosition = await positionService.getLatestPosition(vehicleId);
           console.log('✅ Position récupérée:', latestPosition);
           setPosition(latestPosition);
-        } catch (err) {
+        } catch (err: any) {
+          console.error('❌ Erreur position:', err.response?.status, err.response?.data);
           console.warn('⚠️ Position non disponible');
         }
 
         // Récupérer l'historique des trajets
         try {
+          console.log('📡 Récupération des trajets...');
           const vehicleTrips = await tripService.getTripsByVehicle(vehicleId);
           console.log('✅ Trajets récupérés:', vehicleTrips.length);
           setTrips(vehicleTrips);
-        } catch (err) {
+        } catch (err: any) {
+          console.error('❌ Erreur trajets:', err.response?.status, err.response?.data);
           console.warn('⚠️ Impossible de récupérer l\'historique des trajets');
         }
 
         // Récupérer les recharges de carburant
         try {
+          console.log('📡 Récupération des recharges de carburant...');
           const vehicleFuelRecharges = await fuelRechargeService.getFuelRechargesByVehicle(vehicleId);
-          console.log('✅ Recharges récupérées:', vehicleFuelRecharges.length);
-          setFuelRecharges(vehicleFuelRecharges);
-        } catch (err) {
+          console.log('✅ Recharges - Type:', typeof vehicleFuelRecharges);
+          console.log('✅ Recharges - Raw response:', vehicleFuelRecharges);
+          console.log('✅ Recharges - Is Array?:', Array.isArray(vehicleFuelRecharges));
+          console.log('✅ Recharges - Length:', vehicleFuelRecharges?.length);
+          console.log('✅ Recharges - Keys:', vehicleFuelRecharges ? Object.keys(vehicleFuelRecharges) : 'null');
+
+          // Handle both array and paginated response formats
+          let rechargesArray: any[] = [];
+
+          if (Array.isArray(vehicleFuelRecharges)) {
+            rechargesArray = vehicleFuelRecharges;
+          } else if (vehicleFuelRecharges && typeof vehicleFuelRecharges === 'object') {
+            // Try different possible properties for paginated responses
+            rechargesArray = (vehicleFuelRecharges as any).content
+              || (vehicleFuelRecharges as any).data
+              || (vehicleFuelRecharges as any).items
+              || (vehicleFuelRecharges as any).results
+              || [];
+          }
+
+          console.log('✅ Recharges - Final array type:', Array.isArray(rechargesArray));
+          console.log('✅ Recharges - Final array length:', rechargesArray.length);
+          console.log('✅ Recharges - First item:', rechargesArray.length > 0 ? rechargesArray[0] : 'none');
+          setFuelRecharges(rechargesArray);
+        } catch (err: any) {
+          console.error('❌ Erreur lors de la récupération des recharges de carburant:', err);
+          console.error('❌ Détails de l\'erreur:', err.response?.status, err.response?.data);
           console.warn('⚠️ Impossible de récupérer les recharges de carburant');
+          setFuelRecharges([]); // Ensure we set empty array on error
         }
 
         // Récupérer les maintenances
         try {
+          console.log('📡 Récupération des maintenances...');
           const vehicleMaintenances = await maintenanceService.getMaintenancesByVehicle(vehicleId);
           console.log('✅ Maintenances récupérées:', vehicleMaintenances.length);
           setMaintenances(vehicleMaintenances);
-        } catch (err) {
+        } catch (err: any) {
+          console.error('❌ Erreur maintenances:', err.response?.status, err.response?.data);
           console.warn('⚠️ Impossible de récupérer les maintenances');
         }
       }
@@ -236,6 +274,25 @@ export default function VehicleDetailPage() {
       return 'Hors service';
     }
     return 'En service';
+  };
+
+  const handleDeleteTrip = async (tripId: number) => {
+    if (!await showConfirm({
+      title: 'Supprimer le trajet',
+      message: 'Êtes-vous sûr de vouloir supprimer ce trajet ? Cette action est irréversible.',
+      confirmText: 'Supprimer',
+      cancelText: 'Annuler',
+      isDanger: true
+    })) return;
+
+    try {
+      await tripService.deleteTrip(tripId);
+      setTrips(prev => prev.filter(t => t.tripId !== tripId));
+      console.log('✅ Trajet supprimé');
+    } catch (err) {
+      console.error('❌ Erreur suppression:', err);
+      alert('Erreur lors de la suppression du trajet');
+    }
   };
 
   if (loading) {
@@ -366,15 +423,15 @@ export default function VehicleDetailPage() {
                 Informations actuelles du véhicule {vehicle.vehicleRegistrationNumber}
               </p>
             </div>
-            
+
             {/* Grille des métriques visuelles */}
             <div className={styles.metricsGrid}>
-              <SpeedGauge 
-                speed={vehicle.vehicleSpeed || 0} 
-                maxSpeed={180} 
+              <SpeedGauge
+                speed={vehicle.vehicleSpeed || 0}
+                maxSpeed={180}
               />
-              <FuelGauge 
-                level={vehicle.vehicleFuelLevel || 0} 
+              <FuelGauge
+                level={vehicle.vehicleFuelLevel || 0}
               />
               <PassengerIndicator
                 current={vehicle.vehicleNumberPassengers || 0}
@@ -397,22 +454,22 @@ export default function VehicleDetailPage() {
                   // Convertir le tableau de dates en objet Date
                   const departureDate = trip.departureDateTime
                     ? new Date(
-                        trip.departureDateTime[0],
-                        trip.departureDateTime[1] - 1,
-                        trip.departureDateTime[2],
-                        trip.departureDateTime[3] || 0,
-                        trip.departureDateTime[4] || 0
-                      )
+                      trip.departureDateTime[0],
+                      trip.departureDateTime[1] - 1,
+                      trip.departureDateTime[2],
+                      trip.departureDateTime[3] || 0,
+                      trip.departureDateTime[4] || 0
+                    )
                     : null;
 
                   const arrivalDate = trip.arrivalDateTime
                     ? new Date(
-                        trip.arrivalDateTime[0],
-                        trip.arrivalDateTime[1] - 1,
-                        trip.arrivalDateTime[2],
-                        trip.arrivalDateTime[3] || 0,
-                        trip.arrivalDateTime[4] || 0
-                      )
+                      trip.arrivalDateTime[0],
+                      trip.arrivalDateTime[1] - 1,
+                      trip.arrivalDateTime[2],
+                      trip.arrivalDateTime[3] || 0,
+                      trip.arrivalDateTime[4] || 0
+                    )
                     : null;
 
                   return (
@@ -424,9 +481,21 @@ export default function VehicleDetailPage() {
                     >
                       <div className={styles.tripHeader}>
                         <h3 className={styles.tripId}>Trajet #{trip.tripId}</h3>
-                        <span className={styles.tripDriver}>
-                          Conducteur: {trip.driverName || 'Non assigné'}
-                        </span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                          <span className={styles.tripDriver}>
+                            Conducteur: {trip.driverName || 'Non assigné'}
+                          </span>
+                          <button
+                            className={styles.deleteButton}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteTrip(trip.tripId);
+                            }}
+                            title="Supprimer le trajet"
+                          >
+                            <FiTrash2 />
+                          </button>
+                        </div>
                       </div>
 
                       <div className={styles.tripDetails}>
@@ -435,12 +504,12 @@ export default function VehicleDetailPage() {
                           <span className={styles.tripValue}>
                             {departureDate
                               ? departureDate.toLocaleDateString('fr-FR', {
-                                  year: 'numeric',
-                                  month: 'long',
-                                  day: 'numeric',
-                                  hour: '2-digit',
-                                  minute: '2-digit'
-                                })
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })
                               : 'Non défini'}
                           </span>
                           {trip.departurePoint && (
@@ -458,12 +527,12 @@ export default function VehicleDetailPage() {
                           <span className={styles.tripValue}>
                             {arrivalDate
                               ? arrivalDate.toLocaleDateString('fr-FR', {
-                                  year: 'numeric',
-                                  month: 'long',
-                                  day: 'numeric',
-                                  hour: '2-digit',
-                                  minute: '2-digit'
-                                })
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })
                               : 'En cours'}
                           </span>
                           {trip.arrivalPoint && (
@@ -495,6 +564,12 @@ export default function VehicleDetailPage() {
             {/* Section Recharges de carburant */}
             <div className={styles.bilansSection}>
               <h3 className={styles.bilansSectionTitle}>Recharges de carburant</h3>
+              {(() => {
+                console.log('🔍 DEBUG Affichage - fuelRecharges:', fuelRecharges);
+                console.log('🔍 DEBUG Affichage - fuelRecharges length:', fuelRecharges?.length);
+                console.log('🔍 DEBUG Affichage - Is Array?:', Array.isArray(fuelRecharges));
+                return null;
+              })()}
               {fuelRecharges.length === 0 ? (
                 <p className={styles.noData}>Aucune recharge enregistrée</p>
               ) : (
@@ -502,13 +577,13 @@ export default function VehicleDetailPage() {
                   {fuelRecharges.map((recharge) => {
                     const rechargeDate = recharge.rechargeDateTime
                       ? new Date(
-                          recharge.rechargeDateTime[0],
-                          recharge.rechargeDateTime[1] - 1,
-                          recharge.rechargeDateTime[2],
-                          recharge.rechargeDateTime[3] || 0,
-                          recharge.rechargeDateTime[4] || 0,
-                          recharge.rechargeDateTime[5] || 0
-                        )
+                        recharge.rechargeDateTime[0],
+                        recharge.rechargeDateTime[1] - 1,
+                        recharge.rechargeDateTime[2],
+                        recharge.rechargeDateTime[3] || 0,
+                        recharge.rechargeDateTime[4] || 0,
+                        recharge.rechargeDateTime[5] || 0
+                      )
                       : null;
 
                     return (
@@ -563,13 +638,13 @@ export default function VehicleDetailPage() {
                   {maintenances.map((maintenance) => {
                     const maintenanceDate = maintenance.maintenanceDateTime
                       ? new Date(
-                          maintenance.maintenanceDateTime[0],
-                          maintenance.maintenanceDateTime[1] - 1,
-                          maintenance.maintenanceDateTime[2],
-                          maintenance.maintenanceDateTime[3] || 0,
-                          maintenance.maintenanceDateTime[4] || 0,
-                          maintenance.maintenanceDateTime[5] || 0
-                        )
+                        maintenance.maintenanceDateTime[0],
+                        maintenance.maintenanceDateTime[1] - 1,
+                        maintenance.maintenanceDateTime[2],
+                        maintenance.maintenanceDateTime[3] || 0,
+                        maintenance.maintenanceDateTime[4] || 0,
+                        maintenance.maintenanceDateTime[5] || 0
+                      )
                       : null;
 
                     return (

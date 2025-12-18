@@ -64,7 +64,16 @@ export default function Home() {
           </div>
           <h1 className={styles.heroTitle}>
             Gérez votre flotte de véhicules avec{' '}
-            <span>intelligence et efficacité</span>
+            <span className={styles.animatedTextContainer}>
+              <span className={styles.animatedText}>
+                <span>intelligence</span>
+                <span>sécurité</span>
+                <span>simplicité</span>
+                <span>fiabilité</span>
+                <span>efficacité</span>
+              </span>
+            </span>
+            {' '}et efficacité
           </h1>
           <p className={styles.heroSubtitle}>
             FleetMan est la solution complète pour optimiser la gestion de votre flotte de véhicules.

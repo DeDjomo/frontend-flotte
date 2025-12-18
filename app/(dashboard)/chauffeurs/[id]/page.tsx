@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { FiUser } from 'react-icons/fi';
+import { FiUser, FiTruck } from 'react-icons/fi';
 import { driverService, tripService } from '@/app/lib/services';
 import styles from './driverDetail.module.css';
 
@@ -46,8 +46,8 @@ function TripLocation({ coordinates }: { coordinates: number[] }) {
           const addr = data.address;
           // Prioriser: rue/route, quartier, ville
           locationName = addr.road || addr.suburb || addr.neighbourhood ||
-                        addr.city || addr.town || addr.village ||
-                        addr.county || 'Lieu inconnu';
+            addr.city || addr.town || addr.village ||
+            addr.county || 'Lieu inconnu';
 
           // Ajouter la ville si on a une rue
           if (addr.road && (addr.city || addr.town)) {
@@ -76,6 +76,7 @@ export default function DriverDetailPage() {
 
   const [driver, setDriver] = useState<any>(null);
   const [trips, setTrips] = useState<any[]>([]);
+  const [vehicles, setVehicles] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<TabType>('trips');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -102,6 +103,15 @@ export default function DriverDetailPage() {
         setTrips(driverTrips);
       } catch (err) {
         console.warn('⚠️ Impossible de récupérer l\'historique des trajets');
+      }
+
+      // Récupérer les véhicules assignés
+      try {
+        const driverVehicles = await driverService.getDriverVehicles(driverId);
+        console.log('✅ Véhicules récupérés:', driverVehicles.length);
+        setVehicles(driverVehicles);
+      } catch (err) {
+        console.warn('⚠️ Impossible de récupérer les véhicules du chauffeur');
       }
     } catch (err) {
       console.error('❌ Erreur lors du chargement:', err);
@@ -282,6 +292,36 @@ export default function DriverDetailPage() {
                   </div>
                 )}
               </div>
+            </div>
+
+            <div className={styles.detailsCard}>
+              <h3 className={styles.detailsTitle}>Véhicules assignés</h3>
+              {vehicles.length === 0 ? (
+                <p className={styles.emptyState} style={{ minHeight: 'auto', padding: '1rem' }}>
+                  Aucun véhicule assigné
+                </p>
+              ) : (
+                <div className={styles.tripsList}>
+                  {vehicles.map((vehicle) => (
+                    <Link
+                      key={vehicle.vehicleId}
+                      href={`/vehicules/${vehicle.vehicleId}`}
+                      className={styles.tripCard}
+                      style={{ textDecoration: 'none', display: 'block', cursor: 'pointer' }}
+                    >
+                      <div className={styles.tripHeader} style={{ marginBottom: 0, borderBottom: 'none' }}>
+                        <span className={styles.tripId} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <FiTruck />
+                          {vehicle.vehicleRegistrationNumber}
+                        </span>
+                        <span className={styles.tripDate}>
+                          {vehicle.vehicleBrand} {vehicle.vehicleModel}
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className={styles.detailsCard}>

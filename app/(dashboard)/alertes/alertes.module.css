@@ -346,6 +346,32 @@
   box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }
 
+/* Bouton de suppression */
+.deleteButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 0.5rem;
+}
+
+.deleteButton:hover {
+  background: rgba(239, 68, 68, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.deleteButton svg {
+  font-size: 1.125rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .container {

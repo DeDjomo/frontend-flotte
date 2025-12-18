@@ -559,3 +559,57 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ============================================================================
+   ANIMATED TEXT CAROUSEL
+   ============================================================================ */
+.animatedTextContainer {
+    display: inline-block;
+    position: relative;
+    vertical-align: bottom;
+    overflow: hidden;
+    height: 1.2em;
+}
+
+.animatedText {
+    display: inline-flex;
+    flex-direction: column;
+    animation: slideText 15s infinite;
+}
+
+.animatedText span {
+    display: block;
+    height: 1.2em;
+    line-height: 1.2;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@keyframes slideText {
+
+    0%,
+    20% {
+        transform: translateY(0%);
+    }
+
+    25%,
+    45% {
+        transform: translateY(-20%);
+    }
+
+    50%,
+    70% {
+        transform: translateY(-40%);
+    }
+
+    75%,
+    95% {
+        transform: translateY(-60%);
+    }
+
+    100% {
+        transform: translateY(-80%);
+    }
+}

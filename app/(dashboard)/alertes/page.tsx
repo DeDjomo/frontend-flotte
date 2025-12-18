@@ -4,8 +4,9 @@
 import { useState, useEffect } from 'react';
 import { notificationService } from '@/app/lib/services';
 import { useAuth } from '@/app/contexts/AuthContext';
+import { useModal } from '@/app/contexts/ModalContext';
 import styles from './alertes.module.css';
-import { FiBell, FiBellOff, FiCheck, FiAlertCircle, FiInfo } from 'react-icons/fi';
+import { FiBell, FiBellOff, FiCheck, FiAlertCircle, FiInfo, FiTrash2 } from 'react-icons/fi';
 
 interface Notification {
   notificationId: number;
@@ -23,6 +24,9 @@ export default function AlertesPage() {
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
   const [markingAsRead, setMarkingAsRead] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  const { showConfirm } = useModal();
 
   useEffect(() => {
     if (user?.userId) {
@@ -77,6 +81,31 @@ export default function AlertesPage() {
       alert('Impossible de marquer la notification comme lue');
     } finally {
       setMarkingAsRead(null);
+    }
+  };
+
+  const handleDelete = async (notificationId: number) => {
+    if (!await showConfirm({
+      title: 'Supprimer la notification',
+      message: 'Êtes-vous sûr de vouloir supprimer cette notification ?',
+      confirmText: 'Supprimer',
+      cancelText: 'Annuler',
+      isDanger: true
+    })) {
+      return;
+    }
+
+    try {
+      setDeletingId(notificationId);
+      await notificationService.deleteNotification(notificationId);
+
+      setNotifications(prev => prev.filter(n => n.notificationId !== notificationId));
+      console.log('✅ Notification supprimée');
+    } catch (err) {
+      console.error('❌ Erreur suppression:', err);
+      alert('Erreur lors de la suppression');
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -148,8 +177,8 @@ export default function AlertesPage() {
 
   const filteredNotifications =
     filter === 'unread' ? unreadNotifications :
-    filter === 'read' ? readNotifications :
-    notifications;
+      filter === 'read' ? readNotifications :
+        notifications;
 
   return (
     <div className={styles.container}>
@@ -193,13 +222,13 @@ export default function AlertesPage() {
           <FiBellOff className={styles.emptyIcon} />
           <h2 className={styles.emptyTitle}>
             {filter === 'unread' ? 'Aucune notification non lue' :
-             filter === 'read' ? 'Aucune notification lue' :
-             'Aucune notification'}
+              filter === 'read' ? 'Aucune notification lue' :
+                'Aucune notification'}
           </h2>
           <p className={styles.emptyText}>
             {filter === 'unread' ? 'Toutes vos notifications ont été lues' :
-             filter === 'read' ? 'Vous navez pas encore lu de notifications' :
-             'Vous navez reçu aucune notification'}
+              filter === 'read' ? 'Vous navez pas encore lu de notifications' :
+                'Vous navez reçu aucune notification'}
           </p>
         </div>
       ) : (
@@ -207,9 +236,8 @@ export default function AlertesPage() {
           {filteredNotifications.map((notification) => (
             <div
               key={notification.notificationId}
-              className={`${styles.notificationCard} ${
-                !notification.notificationState ? styles.unread : ''
-              }`}
+              className={`${styles.notificationCard} ${!notification.notificationState ? styles.unread : ''
+                }`}
             >
               <div className={styles.notificationIcon}>
                 {!notification.notificationState ? (
@@ -252,6 +280,17 @@ export default function AlertesPage() {
                         : 'Marquer comme lu'}
                     </button>
                   )}
+                  <button
+                    className={styles.deleteButton}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(notification.notificationId);
+                    }}
+                    disabled={deletingId === notification.notificationId}
+                    title="Supprimer la notification"
+                  >
+                    <FiTrash2 />
+                  </button>
                 </div>
               </div>
             </div>

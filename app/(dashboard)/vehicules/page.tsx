@@ -3,9 +3,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FiPlus, FiTrash2, FiTruck } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiTruck, FiEdit2 } from 'react-icons/fi';
 import { vehicleService } from '@/app/lib/services';
 import { useAuth } from '@/app/contexts/AuthContext';
+import { useModal } from '@/app/contexts/ModalContext';
 import styles from './vehicules.module.css';
 import { useRouter } from 'next/navigation';
 
@@ -52,6 +53,7 @@ export default function VehiculesPage() {
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const router = useRouter();
+  const { showConfirm } = useModal();
 
   useEffect(() => {
     if (user?.userId) {
@@ -84,7 +86,13 @@ export default function VehiculesPage() {
   };
 
   const handleDelete = async (vehicleId: number) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?')) {
+    if (!await showConfirm({
+      title: 'Supprimer le véhicule',
+      message: 'Êtes-vous sûr de vouloir supprimer ce véhicule ? Cette action est irréversible.',
+      confirmText: 'Supprimer',
+      cancelText: 'Annuler',
+      isDanger: true
+    })) {
       return;
     }
 
@@ -93,7 +101,7 @@ export default function VehiculesPage() {
       console.log('Suppression du véhicule:', vehicleId);
       await vehicleService.deleteVehicle(vehicleId);
       console.log('Véhicule supprimé');
-      
+
       // Recharger la liste
       await fetchVehicles();
     } catch (err) {
@@ -173,10 +181,10 @@ export default function VehiculesPage() {
   }
   // Liste des véhicules
   return (
-    
+
     <div className={styles.container}>
       <p className={styles.breadcrumb}>Mes Véhicules</p>
-      
+
       <div className={styles.header}>
         <h1 className={styles.title}>Mes Véhicules</h1>
         <Link href="/vehicules/nouveau" className={styles.addButton}>
@@ -198,8 +206,8 @@ export default function VehiculesPage() {
           </thead>
           <tbody>
             {vehicles.map((vehicle) => (
-              <tr 
-                key={vehicle.vehicleId} 
+              <tr
+                key={vehicle.vehicleId}
                 onClick={() => router.push(`/vehicules/${vehicle.vehicleId}`)}
                 className={styles.tableRow}
               >
@@ -220,14 +228,30 @@ export default function VehiculesPage() {
                   </span>
                 </td>
                 <td>
-                  <button
-                    className={styles.deleteButton}
-                    onClick={() => handleDelete(vehicle.vehicleId)}
-                    disabled={deletingId === vehicle.vehicleId}
-                    aria-label="Supprimer"
-                  >
-                    <FiTrash2 />
-                  </button>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button
+                      className={styles.editButton}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/vehicules/${vehicle.vehicleId}/edit`);
+                      }}
+                      title="Modifier"
+                    >
+                      <FiEdit2 />
+                    </button>
+                    <button
+                      className={styles.deleteButton}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(vehicle.vehicleId);
+                      }}
+                      disabled={deletingId === vehicle.vehicleId}
+                      aria-label="Supprimer"
+                      title="Supprimer"
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

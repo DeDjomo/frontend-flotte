@@ -263,14 +263,14 @@ export const deleteVehicle = async (vehicleId: number): Promise<void> => {
  * @param vehicleId - ID du véhicule
  * @returns Promise avec la liste des conducteurs
  * 
- * Endpoint: GET /vehicles/:id/drivers
+ * Endpoint: GET /driver-vehicle/vehicle/:vehicleId
  * Exemple d'utilisation:
  * const drivers = await vehicleService.getVehicleDrivers(1);
  */
 export const getVehicleDrivers = async (vehicleId: number): Promise<any[]> => {
   try {
     const response: AxiosResponse<any[]> = await api.get(
-      `/vehicles/${vehicleId}/drivers`
+      `/driver-vehicle/vehicle/${vehicleId}`
     );
     return response.data;
   } catch (error) {

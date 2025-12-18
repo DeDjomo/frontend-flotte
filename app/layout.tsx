@@ -4,6 +4,8 @@ import './globals.css';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 
+import { ModalProvider } from '@/app/contexts/ModalContext';
+
 export const metadata: Metadata = {
   title: 'FleetMan - Gestion de Flotte',
   description: 'Système de gestion de flotte de véhicules',
@@ -18,9 +20,11 @@ export default function RootLayout({
     <html lang="fr" suppressHydrationWarning>
       <body>
         <ThemeProvider>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
+          <ModalProvider>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </ModalProvider>
         </ThemeProvider>
       </body>
     </html>
