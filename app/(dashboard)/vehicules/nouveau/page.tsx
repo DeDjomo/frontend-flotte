@@ -103,7 +103,7 @@ export default function NouveauVehiculePage() {
         userId: user.userId,
       });
 
-      console.log('✅ Véhicule créé:', newVehicle);
+      console.log('Véhicule créé:', newVehicle);
 
       // Si une image a été sélectionnée, l'uploader
       if (formData.vehicleImage) {
@@ -113,9 +113,9 @@ export default function NouveauVehiculePage() {
             newVehicle.vehicleId,
             formData.vehicleImage
           );
-          console.log('✅ Image uploadée');
+          console.log('Image uploadée');
         } catch (err) {
-          console.warn('⚠️ Erreur lors de l\'upload de l\'image:', err);
+          console.warn('Erreur lors de l\'upload de l\'image:', err);
           // Ne pas bloquer si l'upload échoue
         }
       }
@@ -123,7 +123,7 @@ export default function NouveauVehiculePage() {
       // Rediriger vers la liste des véhicules
       router.push('/vehicules');
     } catch (err) {
-      console.error('❌ Erreur lors de la création du véhicule:', err);
+      console.error('Erreur lors de la création du véhicule:', err);
       setError('Impossible de créer le véhicule. Veuillez réessayer.');
     } finally {
       setLoading(false);

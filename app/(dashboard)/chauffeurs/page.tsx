@@ -37,10 +37,10 @@ export default function ChauffeursPage() {
 
       console.log('📡 Récupération des chauffeurs...');
       const data = await driverService.getDriversByUser(user.userId);
-      console.log('✅ Chauffeurs récupérés:', data.length);
+      console.log('Chauffeurs récupérés:', data.length);
       setDrivers(data);
     } catch (err) {
-      console.error('❌ Erreur lors du chargement des chauffeurs:', err);
+      console.error('Erreur lors du chargement des chauffeurs:', err);
       setError('Impossible de charger les chauffeurs');
     } finally {
       setLoading(false);

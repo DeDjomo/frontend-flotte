@@ -70,7 +70,7 @@ export default function PositionsPage() {
 
       // Récupérer tous les véhicules de l'utilisateur
       const vehicles = await vehicleService.getVehiclesByUser(user.userId);
-      console.log('✅ Véhicules récupérés:', vehicles.length);
+      console.log('Véhicules récupérés:', vehicles.length);
 
       // Récupérer la position de chaque véhicule
       const positionsPromises = vehicles.map(async (vehicle: any) => {
@@ -83,7 +83,7 @@ export default function PositionsPage() {
             position: position
           };
         } catch (err) {
-          console.warn(`⚠️ Position non disponible pour ${vehicle.vehicleRegistrationNumber}`);
+          console.warn(`Position non disponible pour ${vehicle.vehicleRegistrationNumber}`);
           return {
             vehicleId: vehicle.vehicleId,
             vehicleName: vehicle.vehicleName,
@@ -103,9 +103,9 @@ export default function PositionsPage() {
         setMapCenter([coords[1], coords[0]]); // [lat, lon]
       }
 
-      console.log('✅ Positions récupérées:', positions.filter(v => v.position).length, 'sur', positions.length);
+      console.log('Positions récupérées:', positions.filter(v => v.position).length, 'sur', positions.length);
     } catch (err) {
-      console.error('❌ Erreur lors du chargement des positions:', err);
+      console.error('Erreur lors du chargement des positions:', err);
       setError('Impossible de charger les positions des véhicules');
     } finally {
       setLoading(false);

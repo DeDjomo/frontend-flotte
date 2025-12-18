@@ -93,28 +93,28 @@ export default function DriverDetailPage() {
       // Récupérer les détails du chauffeur
       console.log('📡 Récupération du chauffeur...');
       const driverData = await driverService.getDriverById(driverId);
-      console.log('✅ Chauffeur récupéré:', driverData);
+      console.log('Chauffeur récupéré:', driverData);
       setDriver(driverData);
 
       // Récupérer l'historique des trajets du chauffeur
       try {
         const driverTrips = await tripService.getTripsByDriver(driverId);
-        console.log('✅ Trajets récupérés:', driverTrips.length);
+        console.log('Trajets récupérés:', driverTrips.length);
         setTrips(driverTrips);
       } catch (err) {
-        console.warn('⚠️ Impossible de récupérer l\'historique des trajets');
+        console.warn('Impossible de récupérer l\'historique des trajets');
       }
 
       // Récupérer les véhicules assignés
       try {
         const driverVehicles = await driverService.getDriverVehicles(driverId);
-        console.log('✅ Véhicules récupérés:', driverVehicles.length);
+        console.log('Véhicules récupérés:', driverVehicles.length);
         setVehicles(driverVehicles);
       } catch (err) {
-        console.warn('⚠️ Impossible de récupérer les véhicules du chauffeur');
+        console.warn('Impossible de récupérer les véhicules du chauffeur');
       }
     } catch (err) {
-      console.error('❌ Erreur lors du chargement:', err);
+      console.error('Erreur lors du chargement:', err);
       setError('Impossible de charger les données du chauffeur');
     } finally {
       setLoading(false);

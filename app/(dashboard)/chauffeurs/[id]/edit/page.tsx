@@ -107,12 +107,12 @@ export default function EditChauffeurPage() {
                 personalInformations: formData.personalInformations || undefined,
             });
 
-            console.log('✅ Chauffeur mis à jour');
+            console.log('Chauffeur mis à jour');
 
             // Rediriger vers la liste des chauffeurs (ou détails)
             router.push('/chauffeurs');
         } catch (err) {
-            console.error('❌ Erreur lors de la mise à jour:', err);
+            console.error('Erreur lors de la mise à jour:', err);
             setError('Impossible de mettre à jour le chauffeur. Veuillez réessayer.');
         } finally {
             setSaving(false);

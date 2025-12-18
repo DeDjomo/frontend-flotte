@@ -15,7 +15,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // ⚠️ PAS DE useEffect POUR LA REDIRECTION AUTO
+  // PAS DE useEffect POUR LA REDIRECTION AUTO
   // On laisse l'utilisateur se connecter manuellement
 
   const handleSubmit = async (e: FormEvent) => {
@@ -24,13 +24,13 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      console.log('🔐 Tentative de connexion...');
+      console.log('Tentative de connexion...');
       await login(email, password);
       
-      console.log('✅ Connexion réussie, redirection...');
+      console.log('Connexion réussie, redirection...');
       router.push('/dashboard');
     } catch (err: any) {
-      console.error('❌ Erreur de connexion:', err);
+      console.error('Erreur de connexion:', err);
       
       // Messages d'erreur personnalisés
       if (err.message?.includes('non trouvé')) {

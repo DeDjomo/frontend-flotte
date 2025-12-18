@@ -95,7 +95,7 @@ export default function RegisterPage() {
                 userPhoneNumber: phone,
             });
 
-            console.log('✅ Inscription réussie');
+            console.log('Inscription réussie');
             setSuccess('Inscription réussie ! Redirection vers la connexion...');
 
             // Rediriger vers la page de connexion après 2 secondes
@@ -104,7 +104,7 @@ export default function RegisterPage() {
             }, 2000);
 
         } catch (err: any) {
-            console.error('❌ Erreur d\'inscription:', err);
+            console.error('Erreur d\'inscription:', err);
 
             // Messages d'erreur personnalisés
             if (err.response?.status === 409 || err.message?.includes('existe')) {

@@ -175,7 +175,7 @@ export default function VehicleDetailPage() {
         // Récupérer les détails du véhicule
         console.log('📡 Récupération du véhicule...');
         const vehicleData = await vehicleService.getVehicleById(vehicleId);
-        console.log('✅ Véhicule récupéré:', vehicleData);
+        console.log('Véhicule récupéré:', vehicleData);
         console.log('📊 Vitesse:', vehicleData.vehicleSpeed);
         console.log('⛽ Carburant:', vehicleData.vehicleFuelLevel);
         console.log('👥 Passagers:', vehicleData.vehicleNumberPassengers);
@@ -189,41 +189,41 @@ export default function VehicleDetailPage() {
             setDriver(drivers[0]); // Prendre le premier conducteur
           }
         } catch (err: any) {
-          console.error('❌ Erreur conducteurs:', err.response?.status, err.response?.data);
-          console.warn('⚠️ Aucun conducteur assigné');
+          console.error('Erreur conducteurs:', err.response?.status, err.response?.data);
+          console.warn('Aucun conducteur assigné');
         }
 
         // Récupérer la dernière position connue
         try {
           console.log('📡 Récupération de la position...');
           const latestPosition = await positionService.getLatestPosition(vehicleId);
-          console.log('✅ Position récupérée:', latestPosition);
+          console.log('Position récupérée:', latestPosition);
           setPosition(latestPosition);
         } catch (err: any) {
-          console.error('❌ Erreur position:', err.response?.status, err.response?.data);
-          console.warn('⚠️ Position non disponible');
+          console.error('Erreur position:', err.response?.status, err.response?.data);
+          console.warn('Position non disponible');
         }
 
         // Récupérer l'historique des trajets
         try {
           console.log('📡 Récupération des trajets...');
           const vehicleTrips = await tripService.getTripsByVehicle(vehicleId);
-          console.log('✅ Trajets récupérés:', vehicleTrips.length);
+          console.log('Trajets récupérés:', vehicleTrips.length);
           setTrips(vehicleTrips);
         } catch (err: any) {
-          console.error('❌ Erreur trajets:', err.response?.status, err.response?.data);
-          console.warn('⚠️ Impossible de récupérer l\'historique des trajets');
+          console.error('Erreur trajets:', err.response?.status, err.response?.data);
+          console.warn('Impossible de récupérer l\'historique des trajets');
         }
 
         // Récupérer les recharges de carburant
         try {
           console.log('📡 Récupération des recharges de carburant...');
           const vehicleFuelRecharges = await fuelRechargeService.getFuelRechargesByVehicle(vehicleId);
-          console.log('✅ Recharges - Type:', typeof vehicleFuelRecharges);
-          console.log('✅ Recharges - Raw response:', vehicleFuelRecharges);
-          console.log('✅ Recharges - Is Array?:', Array.isArray(vehicleFuelRecharges));
-          console.log('✅ Recharges - Length:', vehicleFuelRecharges?.length);
-          console.log('✅ Recharges - Keys:', vehicleFuelRecharges ? Object.keys(vehicleFuelRecharges) : 'null');
+          console.log('Recharges - Type:', typeof vehicleFuelRecharges);
+          console.log('Recharges - Raw response:', vehicleFuelRecharges);
+          console.log('Recharges - Is Array?:', Array.isArray(vehicleFuelRecharges));
+          console.log('Recharges - Length:', vehicleFuelRecharges?.length);
+          console.log('Recharges - Keys:', vehicleFuelRecharges ? Object.keys(vehicleFuelRecharges) : 'null');
 
           // Handle both array and paginated response formats
           let rechargesArray: any[] = [];
@@ -239,14 +239,14 @@ export default function VehicleDetailPage() {
               || [];
           }
 
-          console.log('✅ Recharges - Final array type:', Array.isArray(rechargesArray));
-          console.log('✅ Recharges - Final array length:', rechargesArray.length);
-          console.log('✅ Recharges - First item:', rechargesArray.length > 0 ? rechargesArray[0] : 'none');
+          console.log('Recharges - Final array type:', Array.isArray(rechargesArray));
+          console.log('Recharges - Final array length:', rechargesArray.length);
+          console.log('Recharges - First item:', rechargesArray.length > 0 ? rechargesArray[0] : 'none');
           setFuelRecharges(rechargesArray);
         } catch (err: any) {
-          console.error('❌ Erreur lors de la récupération des recharges de carburant:', err);
-          console.error('❌ Détails de l\'erreur:', err.response?.status, err.response?.data);
-          console.warn('⚠️ Impossible de récupérer les recharges de carburant');
+          console.error('Erreur lors de la récupération des recharges de carburant:', err);
+          console.error('Détails de l\'erreur:', err.response?.status, err.response?.data);
+          console.warn('Impossible de récupérer les recharges de carburant');
           setFuelRecharges([]); // Ensure we set empty array on error
         }
 
@@ -254,15 +254,15 @@ export default function VehicleDetailPage() {
         try {
           console.log('📡 Récupération des maintenances...');
           const vehicleMaintenances = await maintenanceService.getMaintenancesByVehicle(vehicleId);
-          console.log('✅ Maintenances récupérées:', vehicleMaintenances.length);
+          console.log('Maintenances récupérées:', vehicleMaintenances.length);
           setMaintenances(vehicleMaintenances);
         } catch (err: any) {
-          console.error('❌ Erreur maintenances:', err.response?.status, err.response?.data);
-          console.warn('⚠️ Impossible de récupérer les maintenances');
+          console.error('Erreur maintenances:', err.response?.status, err.response?.data);
+          console.warn('Impossible de récupérer les maintenances');
         }
       }
     } catch (err) {
-      console.error('❌ Erreur lors du chargement:', err);
+      console.error('Erreur lors du chargement:', err);
       setError('Impossible de charger les données du véhicule');
     } finally {
       setLoading(false);
@@ -288,9 +288,9 @@ export default function VehicleDetailPage() {
     try {
       await tripService.deleteTrip(tripId);
       setTrips(prev => prev.filter(t => t.tripId !== tripId));
-      console.log('✅ Trajet supprimé');
+      console.log('Trajet supprimé');
     } catch (err) {
-      console.error('❌ Erreur suppression:', err);
+      console.error('Erreur suppression:', err);
       alert('Erreur lors de la suppression du trajet');
     }
   };

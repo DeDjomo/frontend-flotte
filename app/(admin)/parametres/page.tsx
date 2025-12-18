@@ -175,7 +175,7 @@ export default function ParametresPage() {
                 </div>
 
                 <div style={{ marginTop: '2rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-                    <p>💡 Les fonctionnalités de configuration seront complétées prochainement</p>
+                    <p>Les fonctionnalités de configuration seront complétées prochainement</p>
                 </div>
             </div>
         </div>

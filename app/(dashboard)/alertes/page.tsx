@@ -43,7 +43,7 @@ export default function AlertesPage() {
 
       console.log('📡 Récupération des notifications...');
       const data = await notificationService.getNotificationsByUser(user.userId);
-      console.log('✅ Notifications récupérées:', data.length);
+      console.log('Notifications récupérées:', data.length);
 
       const sorted = data.sort((a: Notification, b: Notification) => {
         return new Date(b.notificationDateTime).getTime() - new Date(a.notificationDateTime).getTime();
@@ -51,7 +51,7 @@ export default function AlertesPage() {
 
       setNotifications(sorted);
     } catch (err) {
-      console.error('❌ Erreur lors du chargement des notifications:', err);
+      console.error('Erreur lors du chargement des notifications:', err);
       setError('Impossible de charger les notifications');
     } finally {
       setLoading(false);
@@ -75,9 +75,9 @@ export default function AlertesPage() {
         )
       );
 
-      console.log('✅ Notification marquée comme lue');
+      console.log('Notification marquée comme lue');
     } catch (err) {
-      console.error('❌ Erreur lors du marquage:', err);
+      console.error('Erreur lors du marquage:', err);
       alert('Impossible de marquer la notification comme lue');
     } finally {
       setMarkingAsRead(null);
@@ -100,9 +100,9 @@ export default function AlertesPage() {
       await notificationService.deleteNotification(notificationId);
 
       setNotifications(prev => prev.filter(n => n.notificationId !== notificationId));
-      console.log('✅ Notification supprimée');
+      console.log('Notification supprimée');
     } catch (err) {
-      console.error('❌ Erreur suppression:', err);
+      console.error('Erreur suppression:', err);
       alert('Erreur lors de la suppression');
     } finally {
       setDeletingId(null);

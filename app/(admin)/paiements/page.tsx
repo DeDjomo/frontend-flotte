@@ -114,7 +114,7 @@ export default function PaiementsPage() {
                 </div>
 
                 <div style={{ marginTop: '1.5rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-                    <p>💡 Cette page sera connectée au système de paiement prochainement</p>
+                    <p>Cette page sera connectée au système de paiement prochainement</p>
                 </div>
             </div>
         </div>

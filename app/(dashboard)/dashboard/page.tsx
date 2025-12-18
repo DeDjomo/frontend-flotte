@@ -129,26 +129,26 @@ export default function DashboardPage() {
 
           console.log('📡 Récupération des véhicules...');
           vehicles = await vehicleService.getVehiclesByUser(user.userId);
-          console.log('✅ Véhicules récupérés:', vehicles.length);
+          console.log('Véhicules récupérés:', vehicles.length);
 
           console.log('📡 Récupération des chauffeurs...');
           uniqueDrivers = await driverService.getDriversByUser(user.userId);
-          console.log('✅ Chauffeurs récupérés:', uniqueDrivers.length);
+          console.log('Chauffeurs récupérés:', uniqueDrivers.length);
 
           console.log('📡 Récupération des notifications non lues...');
           try {
             unreadCount = await notificationService.countUnreadNotifications(user.userId);
-            console.log('✅ Notifications non lues:', unreadCount);
+            console.log('Notifications non lues:', unreadCount);
           } catch (err) {
-            console.warn('⚠️ Impossible de récupérer le nombre de notifications non lues');
+            console.warn('Impossible de récupérer le nombre de notifications non lues');
           }
 
           console.log('📡 Récupération des trajets...');
           try {
             trips = await tripService.getOngoingTrips();
-            console.log('✅ Trajets en cours récupérés:', trips.length);
+            console.log('Trajets en cours récupérés:', trips.length);
           } catch (err) {
-            console.warn('⚠️ Impossible de récupérer les trajets');
+            console.warn('Impossible de récupérer les trajets');
           }
         }
 

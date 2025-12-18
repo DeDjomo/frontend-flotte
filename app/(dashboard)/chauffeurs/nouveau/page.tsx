@@ -84,12 +84,12 @@ export default function NouveauChauffeurPage() {
         userId: user.userId,
       });
 
-      console.log('✅ Chauffeur créé:', newDriver);
+      console.log('Chauffeur créé:', newDriver);
 
       // Rediriger vers la liste des chauffeurs
       router.push('/chauffeurs');
     } catch (err) {
-      console.error('❌ Erreur lors de la création du chauffeur:', err);
+      console.error('Erreur lors de la création du chauffeur:', err);
       setError('Impossible de créer le chauffeur. Veuillez réessayer.');
     } finally {
       setLoading(false);

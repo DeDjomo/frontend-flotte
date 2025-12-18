@@ -74,11 +74,11 @@ export default function VehiculesPage() {
       } else {
         console.log('📡 Récupération des véhicules...');
         const data = await vehicleService.getVehiclesByUser(user.userId);
-        console.log('✅ Véhicules récupérés:', data.length);
+        console.log('Véhicules récupérés:', data.length);
         setVehicles(data);
       }
     } catch (err) {
-      console.error('❌ Erreur lors du chargement des véhicules:', err);
+      console.error('Erreur lors du chargement des véhicules:', err);
       setError('Impossible de charger les véhicules');
     } finally {
       setLoading(false);

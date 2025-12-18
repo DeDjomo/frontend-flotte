@@ -85,11 +85,11 @@ export default function StatistiquesPage() {
                             listStyle: 'none',
                             padding: 0,
                         }}>
-                            <li style={{ marginBottom: '0.75rem' }}>✓ Rapports d'utilisation mensuels</li>
-                            <li style={{ marginBottom: '0.75rem' }}>✓ Analyses de performance par utilisateur</li>
-                            <li style={{ marginBottom: '0.75rem' }}>✓ Statistiques de consommation de carburant</li>
-                            <li style={{ marginBottom: '0.75rem' }}>✓ Historique des trajets</li>
-                            <li style={{ marginBottom: '0.75rem' }}>✓ Export de données (CSV, PDF)</li>
+                            <li style={{ marginBottom: '0.75rem' }}>Rapports d'utilisation mensuels</li>
+                            <li style={{ marginBottom: '0.75rem' }}>Analyses de performance par utilisateur</li>
+                            <li style={{ marginBottom: '0.75rem' }}>Statistiques de consommation de carburant</li>
+                            <li style={{ marginBottom: '0.75rem' }}>Historique des trajets</li>
+                            <li style={{ marginBottom: '0.75rem' }}>Export de données (CSV, PDF)</li>
                         </ul>
                     </div>
                 </div>

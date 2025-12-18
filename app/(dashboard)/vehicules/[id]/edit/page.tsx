@@ -142,7 +142,7 @@ export default function EditVehiculePage() {
                 // Usually tracking ID is sensitive or immutable, but assuming we can update meta-data.
             });
 
-            console.log('✅ Véhicule mis à jour');
+            console.log('Véhicule mis à jour');
 
             // Si une image a été sélectionnée, l'uploader
             if (formData.vehicleImage) {
@@ -152,16 +152,16 @@ export default function EditVehiculePage() {
                         id,
                         formData.vehicleImage
                     );
-                    console.log('✅ Image uploadée');
+                    console.log('Image uploadée');
                 } catch (err) {
-                    console.warn('⚠️ Erreur lors de l\'upload de l\'image:', err);
+                    console.warn('Erreur lors de l\'upload de l\'image:', err);
                 }
             }
 
             // Rediriger vers la liste des véhicules
             router.push('/vehicules');
         } catch (err) {
-            console.error('❌ Erreur lors de la mise à jour du véhicule:', err);
+            console.error('Erreur lors de la mise à jour du véhicule:', err);
             setError('Impossible de mettre à jour le véhicule. Veuillez réessayer.');
         } finally {
             setSaving(false);

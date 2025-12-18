@@ -89,7 +89,7 @@ export default function TripMap({ trip, onClose, modalStyles }: TripMapProps) {
 
         setIcons({ green: greenIcon, red: redIcon });
       } catch (error) {
-        console.error('❌ Erreur lors du chargement des icônes Leaflet:', error);
+        console.error('Erreur lors du chargement des icônes Leaflet:', error);
         setLoadingError('Erreur lors du chargement de la carte');
       }
     };
