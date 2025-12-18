@@ -231,7 +231,6 @@ export const cleanupOldPositions = async (beforeDate: string): Promise<void> => 
     await api.delete('/positions/cleanup', {
       params: { beforeDate },
     });
-    console.log('Anciennes positions supprimées');
   } catch (error) {
     console.error('Erreur lors du nettoyage des anciennes positions:', error);
     throw error;

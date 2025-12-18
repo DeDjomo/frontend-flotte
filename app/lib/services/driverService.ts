@@ -267,7 +267,6 @@ export const patchDriver = async (
 export const deleteDriver = async (driverId: number): Promise<void> => {
   try {
     await api.delete(`/drivers/${driverId}`);
-    console.log(`Conducteur ${driverId} supprimé avec succès`);
   } catch (error) {
     console.error(`Erreur lors de la suppression du conducteur ${driverId}:`, error);
     throw error;
@@ -320,7 +319,6 @@ export const assignVehicle = async (
 ): Promise<void> => {
   try {
     await api.post(`/drivers/${driverId}/vehicles/${vehicleId}`);
-    console.log(`Véhicule ${vehicleId} assigné au conducteur ${driverId}`);
   } catch (error) {
     console.error(
       `Erreur lors de l'assignation du véhicule ${vehicleId} au conducteur ${driverId}:`,
@@ -347,7 +345,6 @@ export const removeVehicle = async (
 ): Promise<void> => {
   try {
     await api.delete(`/drivers/${driverId}/vehicles/${vehicleId}`);
-    console.log(`Véhicule ${vehicleId} retiré du conducteur ${driverId}`);
   } catch (error) {
     console.error(
       `Erreur lors du retrait du véhicule ${vehicleId} du conducteur ${driverId}:`,

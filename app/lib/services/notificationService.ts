@@ -173,7 +173,6 @@ export const deleteNotification = async (
 ): Promise<void> => {
   try {
     await api.delete(`/notifications/${notificationId}`);
-    console.log(`Notification ${notificationId} supprimée avec succès`);
   } catch (error) {
     console.error(
       `Erreur lors de la suppression de la notification ${notificationId}:`,
@@ -204,7 +203,6 @@ export const markAsRead = async (
     const response: AxiosResponse<Notification> = await api.patch(
       `/notifications/${notificationId}/read`
     );
-    console.log(`Notification ${notificationId} marquée comme lue`);
     return response.data;
   } catch (error) {
     console.error(
@@ -230,7 +228,6 @@ export const markAsUnread = async (
     const response: AxiosResponse<Notification> = await api.patch(
       `/notifications/${notificationId}/mark-as-unread`
     );
-    console.log(`Notification ${notificationId} marquée comme non lue`);
     return response.data;
   } catch (error) {
     console.error(
@@ -254,7 +251,6 @@ export const markAsUnread = async (
 export const markAllAsRead = async (userId: number): Promise<void> => {
   try {
     await api.post(`/notifications/user/${userId}/mark-all-as-read`);
-    console.log(`Toutes les notifications de l'utilisateur ${userId} marquées comme lues`);
   } catch (error) {
     console.error(
       `Erreur lors du marquage de toutes les notifications de l'utilisateur ${userId} comme lues:`,
@@ -667,7 +663,6 @@ export const deleteAllReadNotifications = async (
 ): Promise<void> => {
   try {
     await api.delete(`/notifications/user/${userId}/delete-read`);
-    console.log(`Toutes les notifications lues de l'utilisateur ${userId} supprimées`);
   } catch (error) {
     console.error(
       `Erreur lors de la suppression des notifications lues de l'utilisateur ${userId}:`,
@@ -688,7 +683,6 @@ export const deleteAllReadNotifications = async (
 export const deleteAllNotifications = async (userId: number): Promise<void> => {
   try {
     await api.delete(`/notifications/user/${userId}/delete-all`);
-    console.log(`Toutes les notifications de l'utilisateur ${userId} supprimées`);
   } catch (error) {
     console.error(
       `Erreur lors de la suppression de toutes les notifications de l'utilisateur ${userId}:`,

@@ -199,7 +199,6 @@ export const deleteMaintenance = async (
 ): Promise<void> => {
   try {
     await api.delete(`/maintenances/${maintenanceId}`);
-    console.log(`Maintenance ${maintenanceId} supprimée avec succès`);
   } catch (error) {
     console.error(
       `Erreur lors de la suppression de la maintenance ${maintenanceId}:`,
@@ -630,7 +629,6 @@ export const cancelScheduledMaintenance = async (
 ): Promise<void> => {
   try {
     await api.delete(`/maintenances/scheduled/${scheduledMaintenanceId}`);
-    console.log(`Maintenance planifiée ${scheduledMaintenanceId} annulée`);
   } catch (error) {
     console.error(
       `Erreur lors de l'annulation de la maintenance planifiée ${scheduledMaintenanceId}:`,

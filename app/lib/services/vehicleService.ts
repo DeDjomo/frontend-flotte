@@ -246,7 +246,6 @@ export const patchVehicle = async (
 export const deleteVehicle = async (vehicleId: number): Promise<void> => {
   try {
     await api.delete(`/vehicles/${vehicleId}`);
-    console.log(`Véhicule ${vehicleId} supprimé avec succès`);
   } catch (error) {
     console.error(`Erreur lors de la suppression du véhicule ${vehicleId}:`, error);
     throw error;
@@ -299,7 +298,6 @@ export const assignDriver = async (
 ): Promise<void> => {
   try {
     await api.post(`/vehicles/${vehicleId}/drivers/${driverId}`);
-    console.log(`Conducteur ${driverId} assigné au véhicule ${vehicleId}`);
   } catch (error) {
     console.error(
       `Erreur lors de l'assignation du conducteur ${driverId} au véhicule ${vehicleId}:`,
@@ -326,7 +324,6 @@ export const removeDriver = async (
 ): Promise<void> => {
   try {
     await api.delete(`/vehicles/${vehicleId}/drivers/${driverId}`);
-    console.log(`Conducteur ${driverId} retiré du véhicule ${vehicleId}`);
   } catch (error) {
     console.error(
       `Erreur lors du retrait du conducteur ${driverId} du véhicule ${vehicleId}:`,
@@ -548,7 +545,6 @@ export const updateVehicleSpeed = async (
 ): Promise<void> => {
   try {
     await api.patch(`/vehicles/${vehicleId}/speed`, { speed });
-    console.log(`Vitesse du véhicule ${vehicleId} mise à jour: ${speed} km/h`);
   } catch (error) {
     console.error(
       `Erreur lors de la mise à jour de la vitesse du véhicule ${vehicleId}:`,
@@ -576,7 +572,6 @@ export const updateVehicleFuel = async (
 ): Promise<void> => {
   try {
     await api.patch(`/vehicles/${vehicleId}/fuel`, { fuelLevel });
-    console.log(`Niveau de carburant du véhicule ${vehicleId} mis à jour: ${fuelLevel}%`);
   } catch (error) {
     console.error(
       `Erreur lors de la mise à jour du carburant du véhicule ${vehicleId}:`,

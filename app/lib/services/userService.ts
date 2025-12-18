@@ -243,7 +243,6 @@ export const deleteUser = async (userId: number): Promise<void> => {
     // DELETE ne retourne généralement pas de données
     // Juste un status code (200, 204, etc.)
     await api.delete(`/users/${userId}`);
-    console.log(`Utilisateur ${userId} supprimé avec succès`);
   } catch (error) {
     console.error(`Erreur lors de la suppression de l'utilisateur ${userId}:`, error);
     throw error;
@@ -306,7 +305,6 @@ export const logout = async (): Promise<void> => {
     await api.post('/auth/logout');
     // Supprimer le token du localStorage
     // (à faire dans le composant pour plus de contrôle)
-    console.log('Déconnexion réussie');
   } catch (error) {
     console.error('Erreur lors de la déconnexion:', error);
     throw error;
@@ -387,7 +385,6 @@ export const changePassword = async (
       oldPassword,
       newPassword,
     });
-    console.log('Mot de passe changé avec succès');
   } catch (error) {
     console.error('Erreur lors du changement de mot de passe:', error);
     throw error;
@@ -407,7 +404,6 @@ export const changePassword = async (
 export const forgotPassword = async (email: string): Promise<void> => {
   try {
     await api.post('/auth/forgot-password', { email });
-    console.log('Email de réinitialisation envoyé');
   } catch (error) {
     console.error('Erreur lors de la demande de réinitialisation:', error);
     throw error;
@@ -434,7 +430,6 @@ export const resetPassword = async (
       token,
       newPassword,
     });
-    console.log('Mot de passe réinitialisé avec succès');
   } catch (error) {
     console.error('Erreur lors de la réinitialisation du mot de passe:', error);
     throw error;

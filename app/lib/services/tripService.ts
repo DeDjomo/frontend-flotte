@@ -182,7 +182,6 @@ export const updateTrip = async (
 export const deleteTrip = async (tripId: number): Promise<void> => {
   try {
     await api.delete(`/trips/${tripId}`);
-    console.log(`Trajet ${tripId} supprimé avec succès`);
   } catch (error) {
     console.error(`Erreur lors de la suppression du trajet ${tripId}:`, error);
     throw error;
@@ -214,7 +213,6 @@ export const startTrip = async (tripData: StartTripDto): Promise<Trip> => {
       '/trips/start',
       tripData
     );
-    console.log('Trajet démarré avec succès');
     return response.data;
   } catch (error) {
     console.error('Erreur lors du démarrage du trajet:', error);
@@ -243,7 +241,6 @@ export const endTrip = async (tripData: EndTripDto): Promise<Trip> => {
       '/trips/end',
       tripData
     );
-    console.log(`Trajet ${tripData.tripId} terminé avec succès`);
     return response.data;
   } catch (error) {
     console.error('Erreur lors de l\'arrêt du trajet:', error);
@@ -262,7 +259,6 @@ export const endTrip = async (tripData: EndTripDto): Promise<Trip> => {
 export const cancelTrip = async (tripId: number): Promise<void> => {
   try {
     await api.post(`/trips/${tripId}/cancel`);
-    console.log(`Trajet ${tripId} annulé`);
   } catch (error) {
     console.error(`Erreur lors de l'annulation du trajet ${tripId}:`, error);
     throw error;

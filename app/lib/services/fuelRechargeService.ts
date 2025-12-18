@@ -196,7 +196,6 @@ export const updateFuelRecharge = async (
 export const deleteFuelRecharge = async (rechargeId: number): Promise<void> => {
   try {
     await api.delete(`/fuel-recharges/${rechargeId}`);
-    console.log(`Recharge ${rechargeId} supprimée avec succès`);
   } catch (error) {
     console.error(
       `Erreur lors de la suppression de la recharge ${rechargeId}:`,
