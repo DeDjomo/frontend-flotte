@@ -1,0 +1,58 @@
+/* src/components/dashboard/ActionButton.module.css */
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  font-size: 0.95rem;
+  backdrop-filter: blur(10px);
+}
+
+.actionButton:hover {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
+  border-color: transparent;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(36, 99, 235, 0.3), 0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+.actionButton:active {
+  transform: translateY(0);
+}
+
+.actionIcon {
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  color: var(--primary-cyan);
+  transition: color 0.3s ease;
+}
+
+.actionButton:hover .actionIcon {
+  color: white;
+}
+
+.actionLabel {
+  white-space: nowrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .actionButton {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .actionIcon {
+    font-size: 1.1rem;
+  }
+}

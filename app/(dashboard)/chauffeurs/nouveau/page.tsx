@@ -1,0 +1,235 @@
+// src/app/(dashboard)/chauffeurs/nouveau/page.tsx
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { driverService } from '@/app/lib/services';
+import { useAuth } from '@/app/contexts/AuthContext';
+import styles from './nouveau.module.css';
+
+interface DriverFormData {
+  driverName: string;
+  driverEmail: string;
+  driverPhoneNumber: string;
+  emergencyContactName: string;
+  emergencyContact: string;
+  personalInformations: string;
+}
+
+export default function NouveauChauffeurPage() {
+  const { user } = useAuth();
+  const router = useRouter();
+  const [formData, setFormData] = useState<DriverFormData>({
+    driverName: '',
+    driverEmail: '',
+    driverPhoneNumber: '',
+    emergencyContactName: '',
+    emergencyContact: '',
+    personalInformations: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    // Validation
+    if (!formData.driverName.trim()) {
+      setError('Le nom est obligatoire');
+      return;
+    }
+    if (!formData.driverEmail.trim()) {
+      setError('L\'email est obligatoire');
+      return;
+    }
+    if (!formData.driverPhoneNumber.trim()) {
+      setError('Le numéro de téléphone est obligatoire');
+      return;
+    }
+
+    // Validation email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.driverEmail)) {
+      setError('L\'email n\'est pas valide');
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      if (!user?.userId) {
+        setError('Utilisateur non connecté');
+        return;
+      }
+
+      // Créer le chauffeur
+      console.log('📡 Création du chauffeur...');
+      const newDriver = await driverService.createDriver({
+        driverName: formData.driverName,
+        driverEmail: formData.driverEmail,
+        driverPhoneNumber: formData.driverPhoneNumber,
+        emergencyContactName: formData.emergencyContactName || undefined,
+        emergencyContact: formData.emergencyContact || undefined,
+        personalInformations: formData.personalInformations || undefined,
+        userId: user.userId,
+      });
+
+      console.log('Chauffeur créé:', newDriver);
+
+      // Rediriger vers la liste des chauffeurs
+      router.push('/chauffeurs');
+    } catch (err) {
+      console.error('Erreur lors de la création du chauffeur:', err);
+      setError('Impossible de créer le chauffeur. Veuillez réessayer.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className={styles.container}>
+      <p className={styles.breadcrumb}>
+        <Link href="/chauffeurs" className={styles.breadcrumbLink}>
+          Mes Chauffeurs
+        </Link>
+        {' '}/{' '}
+        <span className={styles.breadcrumbCurrent}>Nouveau chauffeur</span>
+      </p>
+
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <h1 className={styles.formTitle}>Enregistrer un nouveau chauffeur</h1>
+
+        {error && (
+          <div className={styles.errorMessage}>
+            {error}
+          </div>
+        )}
+
+        <div className={styles.formGrid}>
+          {/* Nom complet */}
+          <div className={styles.formGroup}>
+            <label htmlFor="driverName" className={styles.label}>
+              Nom complet <span className={styles.required}>*</span>
+            </label>
+            <input
+              type="text"
+              id="driverName"
+              name="driverName"
+              value={formData.driverName}
+              onChange={handleInputChange}
+              className={styles.input}
+              placeholder="Ex: Jean Dupont"
+              required
+            />
+          </div>
+
+          {/* Email */}
+          <div className={styles.formGroup}>
+            <label htmlFor="driverEmail" className={styles.label}>
+              Email <span className={styles.required}>*</span>
+            </label>
+            <input
+              type="email"
+              id="driverEmail"
+              name="driverEmail"
+              value={formData.driverEmail}
+              onChange={handleInputChange}
+              className={styles.input}
+              placeholder="Ex: jean.dupont@exemple.com"
+              required
+            />
+          </div>
+
+          {/* Numéro de téléphone */}
+          <div className={styles.formGroup}>
+            <label htmlFor="driverPhoneNumber" className={styles.label}>
+              Numéro de téléphone <span className={styles.required}>*</span>
+            </label>
+            <input
+              type="tel"
+              id="driverPhoneNumber"
+              name="driverPhoneNumber"
+              value={formData.driverPhoneNumber}
+              onChange={handleInputChange}
+              className={styles.input}
+              placeholder="Ex: +237 6 12 34 56 78"
+              required
+            />
+          </div>
+
+          {/* Nom du contact d'urgence */}
+          <div className={styles.formGroup}>
+            <label htmlFor="emergencyContactName" className={styles.label}>
+              Nom du contact d'urgence
+            </label>
+            <input
+              type="text"
+              id="emergencyContactName"
+              name="emergencyContactName"
+              value={formData.emergencyContactName}
+              onChange={handleInputChange}
+              className={styles.input}
+              placeholder="Ex: Marie Dupont"
+            />
+          </div>
+
+          {/* Contact d'urgence */}
+          <div className={styles.formGroup}>
+            <label htmlFor="emergencyContact" className={styles.label}>
+              Numéro du contact d'urgence
+            </label>
+            <input
+              type="tel"
+              id="emergencyContact"
+              name="emergencyContact"
+              value={formData.emergencyContact}
+              onChange={handleInputChange}
+              className={styles.input}
+              placeholder="Ex: +237 6 98 76 54 32"
+            />
+          </div>
+
+          {/* Informations personnelles */}
+          <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+            <label htmlFor="personalInformations" className={styles.label}>
+              Informations personnelles
+            </label>
+            <textarea
+              id="personalInformations"
+              name="personalInformations"
+              value={formData.personalInformations}
+              onChange={handleInputChange}
+              className={styles.textarea}
+              placeholder="Ex: Permis B, 10 ans d'expérience, formation secourisme..."
+              rows={4}
+            />
+          </div>
+        </div>
+
+        {/* Boutons d'action */}
+        <div className={styles.formActions}>
+          <Link href="/chauffeurs" className={styles.cancelButton}>
+            Annuler
+          </Link>
+          <button
+            type="submit"
+            className={styles.submitButton}
+            disabled={loading}
+          >
+            {loading ? 'Enregistrement en cours...' : 'Enregistrer le chauffeur'}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
